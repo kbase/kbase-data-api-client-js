@@ -1,0 +1,11 @@
+# Change Log for JavaScript Data API
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased] - 2015-08-23
+### Created from core repo
+### Author(s): Dan Gunter - dkgunter@lbl.gov
+- All the JS API files were copied from the develop branch of the data_api repo.
+- README was updated to reflect new directory structure.
+- For now, the 'core' data_api dependencies are being handled by asking the developer
+  to manually check out that repo and build it.

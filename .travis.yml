@@ -31,7 +31,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
   - npm install
-  - export PATH=`pwd`/node_modules/karma-cli/bin/karma:`pwd`/node_modules/corsproxy/bin:$PATH
+  - export PATH=`pwd`/node_modules/karma-cli/bin:`pwd`/node_modules/corsproxy/bin:$PATH
   - grunt build-travis
   - CORSPROXY_PORT=8000 corsproxy &
 

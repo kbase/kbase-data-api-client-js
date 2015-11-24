@@ -35,5 +35,9 @@
     "grunt-connect": "0.2.0",
     "grunt-open": "0.2.3",
     "corsproxy": "1.4.0"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/kbase/data_api_js_clients"
   }
 }

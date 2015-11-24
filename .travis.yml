@@ -28,9 +28,9 @@ before_script:
   - printf "Build dir = $TRAVIS_BUILD_DIR\n"
 #  - ls /a/b/c/d/e # fail-fast
   # Run services
-  - data_api_start_service.py --service taxon --config deployment.cfg & #> taxonAPI.out &
-  - data_api_start_service.py --service assembly --config deployment.cfg & #> assemblyAPI.out &
-#  - data_api_start_service.py --service genomeannotation --config deployment.cfg
+  - data_api_start_service.py --service taxon --config deployment.cfg > taxonAPI.out &
+  - data_api_start_service.py --service assembly --config deployment.cfg > assemblyAPI.out &
+#  - data_api_start_service.py --service genomeannotation --config deployment.cfg > gaAPI.out &
   - export DISPLAY=:99.0
   - export CHROME_BIN=chromium-browser
   - sh -e /etc/init.d/xvfb start
@@ -52,3 +52,6 @@ after_success:
   - kill $(cat taxonAPI.pid)
   - kill $(cat assemblyAPI.pid)
 #  - kill $(cat genomeannotationAPI.pid)
+  - cat taxonAPI.out
+  - cat assemblyAPI.out
+  - cat gaAPI.out  

@@ -25,8 +25,8 @@ install:
 
 before_script:
   - printf "Build dir = $TRAVIS_BUILD_DIR\n"
-  - nohup data_api_start_service.py --service taxon --config deployment.cfg > taxonAPI.out &
-  - nohup data_api_start_service.py --service assembly --config deployment.cfg > assemblyAPI.out &
+  - data_api_start_service.py --service taxon --config deployment.cfg & #> taxonAPI.out &
+  - data_api_start_service.py --service assembly --config deployment.cfg & #> assemblyAPI.out &
 #  - data_api_start_service.py --service genomeannotation --config deployment.cfg
   - export DISPLAY=:99.0
   - export CHROME_BIN=chromium-browser

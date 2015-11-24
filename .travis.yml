@@ -14,12 +14,14 @@ cache:
 before_install:
   - git clone -b develop https://github.com/kbase/data_api.git core-develop
   - npm install -g bower
-  - redis-server redis.conf &
  
 install:
   - cd core-develop
   - pip install -r requirements.txt
   - python setup.py install -vv
+  - cd ..
+  - npm install
+  - grunt build-travis
 
 before_script:
   - printf "Build dir = $TRAVIS_BUILD_DIR\n"
@@ -30,13 +32,11 @@ before_script:
   - export CHROME_BIN=chromium-browser
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
-  - npm install
-  - export PATH=`pwd`/node_modules/karma-cli/bin:`pwd`/node_modules/corsproxy/bin:$PATH
-  - grunt build-travis
-  - CORSPROXY_PORT=8000 corsproxy &
+  - CORSPROXY_PORT=8000 ./node_modules/corsproxy/bin/corsproxy &
+  - redis-server redis.conf &
 
 script:
-  - karma start test/karma.conf.js
+  - ./node_modules/karma-cli/bin/karma start test/karma.conf.js
 
 env:
   - KB_DEPLOY_URL="dir_cache"

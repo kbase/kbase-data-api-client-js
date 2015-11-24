@@ -14,6 +14,7 @@ cache:
 before_install:
   - git clone -b develop https://github.com/kbase/data_api.git core-develop
   - npm install -g bower
+  - ls -lR
  
 install:
   - cd core-develop
@@ -25,6 +26,7 @@ install:
 
 before_script:
   - printf "Build dir = $TRAVIS_BUILD_DIR\n"
+  - ls /a/b/c/d/e # fail-fast
   # Run services
   - data_api_start_service.py --service taxon --config deployment.cfg & #> taxonAPI.out &
   - data_api_start_service.py --service assembly --config deployment.cfg & #> assemblyAPI.out &

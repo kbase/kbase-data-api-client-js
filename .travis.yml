@@ -55,5 +55,5 @@ after_success:
 # Make service logs easy to inspect, then clean up
   - cat taxonAPI.out
   - cat assemblyAPI.out
-  - cat gaAPI.out  
+  - cat gaAPI.out
   - rm -f taxonAPI.out assemblyAPI.out gaAPI.out

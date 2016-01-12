@@ -1,10 +1,11 @@
 require([
     'bluebird',
-    'kb_data_taxon',
-    'kb_common_session',
+    'kb/data/taxon',
+    'thrift',
+    'kb/common/session',
     'htdocs/utils',
     'yaml!config/config.yml'
-], function (Promise, fTaxonApi, fSession, utils, config) {
+], function (Promise, Taxon, Thrift, fSession, utils, config) {
     'use strict';
     function toArray(x) {
         return Array.prototype.slice.call(x);
@@ -103,7 +104,7 @@ require([
         })
             .then(function (kbSession) {
                 console.log('timeout is ' + config.timeout);
-                return fTaxonApi({
+                return Taxon.make({
                     ref: objectRef,
                     url: config.taxonUrl,
                     token: kbSession.token,
@@ -122,29 +123,53 @@ require([
                                 resolve();
                             })
                             .catch(function (err) {
-                                showField(method, '* ERROR *');
-                                console.log('ERROR in ' + method);
-                                console.log(err);
+                                if (err instanceof Taxon.AttributeException) {
+                                    showField(method, '* n/a to this object *');
+                                } else {
+                                    showField(method, 'ERROR: ' + err.name + ':' + err.message);
+                                }
+//                                console.log('ERROR in ' + method);
+//                                console.log(err);
+//                                console.log(err instanceof Thrift.TException);
+//                                console.log(err instanceof Thrift.TApplicationException);
+//                                console.log(err instanceof Thrift.TTransportError);
+//                                console.log(err instanceof Thrift.TXHRTransportError);
                                 //resolve();
                                 reject(err);
                             });
-                    });
+                    }).reflect();
                 });
                 showStatus('Running methods...');
                 // return Promise.each(promises, function () { return true;});
-                return Promise.settle(promises);
+                return Promise.all(promises);
             })
             .then(function () {
                 showStatus('done');
             })
             .catch(function (err) {
                 showStatus('done, with error');
-                showError({
-                    type: 'Unknown',
-                    title: 'An unknown error',
-                    suggestion: 'Check the console for the error object',
-                    errorObject: err
-                });
+                if (err instanceof Taxon.TaxonException) {
+                    utils.showError(err);
+                } else if (err instanceof Thrift.TTransportError) {
+                    utils.showError(err);
+                } else if (err instanceof Thrift.TException) {
+                    utils.showError({
+                        name: 'ThriftException',
+                        reason: err.name,
+                        message: err.getMessage()
+                    });
+                } else if (err instanceof Thrift.AttributeException) {
+                    utils.showError({
+                        name: 'AttributeException', 
+                        reason: err.name,
+                        message: 'This attribute is not supported for this object'
+                    });
+                } else {
+                    utils.showError({
+                        type: 'UnknownError',
+                        message: 'Check the browser console'
+                    });
+                }
             });
     } catch (ex) {
         showError(ex);

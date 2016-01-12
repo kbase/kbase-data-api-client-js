@@ -12,9 +12,8 @@
   "moduleType": "amd-library",
   "repository": {
       "type": "git",
-      "url": "git://github.com/kbase/data_api_js_clients"
+      "url": "git://github.com/eapearson/kbase-data-api-js-clients"
   },
-  
   "dependencies": {
     "bluebird": "3.1.1",
     "requirejs": "2.1.20",
@@ -30,5 +29,6 @@
     "bootstrap": "3.3.5",
     "require-css": "0.1.8",
     "font-awesome": "4.4.0"
-  }
+  },
+  "license": "SEE LICENSE IN LICENSE"
 }

@@ -1,11 +1,20 @@
 {
   "name": "kbase-data-api-js-clients",
+  "description": "Javascript Clients for the KBase Data API",
+  "author": ["kbase"],
+  "keywords": ["kbase", "data", "api", "client"],
   "ignore": [
       ".*",
       "/runtime",
       "/test",
       "/tools"
   ],
+  "moduleType": "amd-library",
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/kbase/data_api_js_clients"
+  },
+  
   "dependencies": {
     "bluebird": "3.1.1",
     "requirejs": "2.1.20",

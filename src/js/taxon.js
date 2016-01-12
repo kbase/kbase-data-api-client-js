@@ -11,7 +11,7 @@
 /*jslint white: true, browser: true*/
 define([
     'bluebird',
-    'taxon_service',
+    './taxon/thrift_service',
     'thrift',
 
     // These don't have representations. Loading them causes the Thrift module
@@ -21,6 +21,15 @@ define([
     'thrift_protocol_binary'
 ], function (Promise, taxon, Thrift) {
     'use strict';
+    
+    var TaxonException = function (reason, message, suggestion) {
+        this.name = 'TaxonException';
+        this.reason = reason;
+        this.message = message;
+        this.suggestion = suggestion;
+    }
+    TaxonException.prototype = Object.create(Thrift.TException.prototype);
+    TaxonException.prototype.constructor = TaxonException;
 
     /**
      * Represents an interface to the Taxon data service.
@@ -40,44 +49,40 @@ define([
 
         // Construction argument contract enforcement, throw useful exceptions
         if (!config) {
-            throw {
+            throw new TaxonException({
                 type: 'ArgumentError',
                 name: 'ConfigurationObjectMissing',
                 message: 'Configuration object missing',
                 suggestion: 'This is an API usage error; the taxon factory object is required to have a single configuration object as an argument.'
-            };
+            });
         }
         objectReference = config.ref;
         if (!objectReference) {
-            throw {
+            throw new TaxonException({
                 type: 'ArgumentError',
                 name: 'ObjectReferenceMissing',
                 message: 'Object reference "ref" missing',
                 suggestion: 'The object reference is provided as in the "ref" argument to the config property'
-            };
+            });
         }
         dataAPIUrl = config.url;
         if (!dataAPIUrl) {
-            throw {
+            throw new TaxonException({
                 type: 'ArgumentError',
                 name: 'UrlMissing',
                 message: 'Cannot find a url for the data api',
                 suggestion: 'The url is provided as in the "url" argument property'
-            };
+            });
 
         }
         authToken = config.token;
-        if (authToken == '' || authToken == null) {
-        }
-        else if (!authToken.match(/un=.*\|tokenid=.*/)) {
-            throw {
+        if (!authToken) {
+            throw new TaxonException({
                 type: 'ArgumentError',
                 name: 'AuthTokenMissing',
-                message: 'Invalid Authorization found; Authorization token ' +
-                         'must match pattern "un=<name>|tokenid=<token>..."',
-                suggestion: 'Authorization is provided in the "token"' +
-                            'argument property'
-            };
+                message: 'No Authorization found; Authorization is required for the data api',
+                suggestion: 'The authorization is provided in the "token" argument" property'
+            });
         }
         timeout = config.timeout;
         if (!timeout) {
@@ -103,12 +108,12 @@ define([
                 if (ex.type && ex.name) {
                     throw ex;
                 } else {
-                    throw {
+                    throw new TaxonException({
                         type: 'ThriftError',
                         message: 'An error was encountered creating the thrift client objects',
                         suggestion: 'This could be a configuration or runtime error. Please consult the console for the error object',
                         errorObject: ex
-                    };
+                    });
                 }
             }
         }
@@ -167,14 +172,7 @@ define([
          *
          */
         function getScientificLineage() {
-           return Promise.resolve(client()
-                .get_scientific_lineage(authToken, objectReference, true))
-              .then(function (data) {
-                  var str_data = data + ''
-                  var r = str_data.split(',')
-                    .map(function (x) { return x.trim(' ') })
-                  return r
-              })
+            return Promise.resolve(client().get_scientific_lineage(authToken, objectReference, true));
         }
 
         /**
@@ -182,7 +180,11 @@ define([
          * @returns {String}
          */
         function getScientificName() {
-            return Promise.resolve(client().get_scientific_name(authToken, objectReference, true));
+            return Promise.try(function () {
+                console.log('Got token: ' + authToken);
+                console.log('Obj ref: ' + objectReference);
+                return (client().get_scientific_name(authToken, objectReference, true));
+            });
         }
 
         /**
@@ -243,5 +245,16 @@ define([
 
     };
 
-    return Taxon;
+    return Object.freeze({
+        make: function (config) {
+            return Taxon(config);
+        },
+        TaxonException: TaxonException,
+        ServiceException: taxon.ServiceException,
+        AuthorizationException: taxon.AuthorizationException,
+        AuthenticationException: taxon.AuthenticationException,
+        ObjectReferenceException: taxon.ObjectReferenceException,
+        AttributeException: taxon.AttributeException,
+        TypeException: taxon.TypeException
+    });
 });

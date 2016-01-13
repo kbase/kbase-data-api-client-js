@@ -149,10 +149,13 @@ and open the template in the editor.
                             if (err.type) {
                                 utils.showError(err);
                             } else if (utils.findProp(err, 'name', 'TException')) {
+                                console.log('THRIFT EXCEPTION');
+                                console.log(err);
                                 utils.showError({
                                     type: 'ThriftException',
                                     reason: err.name,
-                                    message: err.getMessage()
+                                    message: err.getMessage(),
+                                    suggestions: err.suggestions
                                 });
                             } else {
                                 console.log('ERROR');

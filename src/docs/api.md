@@ -11,7 +11,7 @@ var objectRef = '993/329/2';
 var taxonUrl = 'http://test.kbase.us/taxon';
 var token = myFunctionToGetAToken();
 var timeout = 10000;
-var taxon = Taxon({
+var taxon = Taxon.make({
     ref: objectRef,
     url: taxonUrl,
     token: token,

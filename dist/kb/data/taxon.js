@@ -181,8 +181,6 @@ define([
          */
         function getScientificName() {
             return Promise.try(function () {
-                console.log('Got token: ' + authToken);
-                console.log('Obj ref: ' + objectReference);
                 return (client().get_scientific_name(authToken, objectReference, true));
             });
         }

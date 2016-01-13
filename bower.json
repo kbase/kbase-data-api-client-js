@@ -7,7 +7,10 @@
       ".*",
       "/runtime",
       "/test",
-      "/tools"
+      "/tools",
+      "/bower_components",
+      "/node_modules",
+      "/temp"
   ],
   "moduleType": "amd-library",
   "main": "install.yml",
@@ -25,7 +28,6 @@
     "text": "requirejs-text#2.0.14",
     "requirejs-text": "2.0.14",
     "require-yaml": "0.1.2",
-    "thrift": "eapearson/thrift#master",
     "jquery": "2.1.4",
     "bootstrap": "3.3.5",
     "require-css": "0.1.8",

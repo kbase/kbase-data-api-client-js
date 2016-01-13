@@ -27,7 +27,7 @@ define([
         this.reason = reason;
         this.message = message;
         this.suggestion = suggestion;
-    }
+    };
     TaxonException.prototype = Object.create(Thrift.TException.prototype);
     TaxonException.prototype.constructor = TaxonException;
 
@@ -130,7 +130,16 @@ define([
          *
          */
         function getParent() {
-            return Promise.resolve(client().get_parent(authToken, objectReference, true));
+            return Promise.try(function () {
+                try {
+                    return client().get_parent(authToken, objectReference, true);
+                } catch (ex) {
+                    if (ex instanceof taxon.AttributeException) {
+                        return undefined;
+                    }
+                    throw ex;
+                }
+            });
         }
 
         /**
@@ -181,8 +190,6 @@ define([
          */
         function getScientificName() {
             return Promise.try(function () {
-                console.log('Got token: ' + authToken);
-                console.log('Obj ref: ' + objectReference);
                 return (client().get_scientific_name(authToken, objectReference, true));
             });
         }
@@ -242,7 +249,6 @@ define([
             getGeneticCode: getGeneticCode,
             getAliases: getAliases
         });
-
     };
 
     return Object.freeze({

@@ -27,7 +27,8 @@ require.config({
         taxon_types: 'js/thrift/taxon/taxon_types',
         taxon_service: 'js/thrift/taxon/thrift_service',
         // The main product
-        kb_data_taxon: 'js/Taxon' //,
+        kb_data_taxon: 'js/Taxon'
+        
         
         //kb_common_html:    'bower_components/kbase-common-js/kb/common/html',
         //kb_common_cookie:  'bower_components/kbase-common-js/kb/common/cookie',

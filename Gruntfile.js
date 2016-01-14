@@ -306,9 +306,15 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'temp/gen-js',
+                        cwd: 'temp/taxon',
                         src: 'taxon_types.js',
                         dest: makeBuildPath('kb/data/taxon'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'temp/assembly',
+                        src: 'assembly_types.js',
+                        dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     }
                 ],
@@ -321,9 +327,15 @@ module.exports = function (grunt) {
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'temp/gen-js',
+                        cwd: 'temp/taxon',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/taxon'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'temp/assembly',
+                        src: 'thrift_service.js',
+                        dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     }
                 ],
@@ -387,12 +399,23 @@ module.exports = function (grunt) {
             }
         },
         shell: {
-            compileThrift: {
+            compileTaxon: {
                 command: [
                     'thrift',
                     '-gen js:jquery',
-                    '-o temp',
+                    '-out temp/taxon',
                     '<%= corepath %>/thrift/specs/taxonomy/taxon/taxon.thrift'
+                ].join(' '),
+                options: {
+                    stderr: false
+                }
+            },
+            compileAssembly: {
+                command: [
+                    'thrift',
+                    '-gen js:jquery',
+                    '-out temp/assembly',
+                    '<%= corepath %>/thrift/specs/sequence/assembly/assembly.thrift'
                 ].join(' '),
                 options: {
                     stderr: false
@@ -407,7 +430,7 @@ module.exports = function (grunt) {
         mkdir: {
             temp: {
                 options: {
-                    create: ['temp']
+                    create: ['temp/taxon', 'temp/assembly']
                 }
             }
         },
@@ -474,7 +497,8 @@ module.exports = function (grunt) {
         'copy:build',
         'build-thrift-libs',
         'copy:bower-package',
-        'jsdoc:build',
+        // disable temporarily -- it breaks under some generated code.
+        // 'jsdoc:build',
         'markdown:build'
     ]);
     
@@ -496,7 +520,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build-thrift-libs', [
         'clean:temp',
         'mkdir:temp',
-        'shell:compileThrift',
+        'shell:compileTaxon',
+        'shell:compileAssembly',
         'copy:thriftLib1',
         'copy:thriftLib2',
         'copy:thriftLib',

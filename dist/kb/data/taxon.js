@@ -13,7 +13,6 @@ define([
     'bluebird',
     './taxon/thrift_service',
     'thrift',
-
     // These don't have representations. Loading them causes the Thrift module
     // to be enhanced with additional properties (typically just a single
     //  property, the new capability added.)
@@ -21,7 +20,7 @@ define([
     'thrift_protocol_binary'
 ], function (Promise, taxon, Thrift) {
     'use strict';
-    
+
     var TaxonException = function (reason, message, suggestion) {
         this.name = 'TaxonException';
         this.reason = reason;
@@ -41,7 +40,7 @@ define([
      * @param {string} config.token The KBase authorization token to be used to access the service.
      * @returns {Taxon} A taxon api object
      */
-    var Taxon = function (config) {
+    function makeTaxonClient(config) {
         var objectReference,
             dataAPIUrl,
             authToken,
@@ -98,7 +97,7 @@ define([
          * @ignore
          */
         function client() {
-             try {
+            try {
                 var transport = new Thrift.TXHRTransport(dataAPIUrl, {timeout: timeout}),
                     protocol = new Thrift.TBinaryProtocol(transport),
                     thriftClient = new taxon.thrift_serviceClient(protocol);
@@ -107,14 +106,13 @@ define([
                 // Rethrow exceptions in our format:
                 if (ex.type && ex.name) {
                     throw ex;
-                } else {
-                    throw new TaxonException({
-                        type: 'ThriftError',
-                        message: 'An error was encountered creating the thrift client objects',
-                        suggestion: 'This could be a configuration or runtime error. Please consult the console for the error object',
-                        errorObject: ex
-                    });
                 }
+                throw new TaxonException({
+                    type: 'ThriftError',
+                    message: 'An error was encountered creating the thrift client objects',
+                    suggestion: 'This could be a configuration or runtime error. Please consult the console for the error object',
+                    errorObject: ex
+                });
             }
         }
 
@@ -130,16 +128,10 @@ define([
          *
          */
         function getParent() {
-            return Promise.try(function () {
-                try {
-                    return client().get_parent(authToken, objectReference, true);
-                } catch (ex) {
-                    if (ex instanceof taxon.AttributeException) {
-                        return undefined;
-                    }
-                    throw ex;
-                }
-            });
+            return client().get_parent(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -149,7 +141,10 @@ define([
          * @returns {Array<ObjectReference>} An array of object references representing the children of this object.
          */
         function getChildren() {
-            return Promise.resolve(client().get_children(authToken, objectReference, true));
+            return client().get_children(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -157,7 +152,10 @@ define([
          * @returns {Array<String>} An array of genome annotation strings
          */
         function getGenomeAnnotations() {
-            return Promise.resolve(client().get_genome_annotations(authToken, objectReference, true));
+            return client().get_genome_annotations(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -181,7 +179,10 @@ define([
          *
          */
         function getScientificLineage() {
-            return Promise.resolve(client().get_scientific_lineage(authToken, objectReference, true));
+            return client().get_scientific_lineage(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -190,7 +191,10 @@ define([
          */
         function getScientificName() {
             return Promise.try(function () {
-                return (client().get_scientific_name(authToken, objectReference, true));
+                return client().get_scientific_name(authToken, objectReference, true)                
+                    .catch(taxon.AttributeException, function (err) {
+                        return undefined;
+                    });;
             });
         }
 
@@ -199,7 +203,10 @@ define([
          * @returns {Number}
          */
         function getTaxonomicId() {
-            return Promise.resolve(client().get_taxonomic_id(authToken, objectReference, true));
+            return client().get_taxonomic_id(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });            
         }
 
         /**
@@ -207,7 +214,10 @@ define([
          * @returns {String}
          */
         function getKingdom() {
-            return Promise.resolve(client().get_kingdom(authToken, objectReference, true));
+            return client().get_kingdom(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -215,7 +225,10 @@ define([
          * @returns {String}
          */
         function getDomain() {
-            return Promise.resolve(client().get_domain(authToken, objectReference, true));
+            return client().get_domain(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -225,7 +238,10 @@ define([
          * @see {@link http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi} NCBI "The Genetic Codes"
          */
         function getGeneticCode() {
-            return Promise.resolve(client().get_genetic_code(authToken, objectReference, true));
+            return client().get_genetic_code(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         /**
@@ -233,7 +249,10 @@ define([
          * @returns {Array<String>}
          */
         function getAliases() {
-            return Promise.resolve(client().get_aliases(authToken, objectReference, true));
+            return client().get_aliases(authToken, objectReference, true)
+                .catch(taxon.AttributeException, function (err) {
+                    return undefined;
+                });
         }
 
         // API
@@ -253,7 +272,10 @@ define([
 
     return Object.freeze({
         make: function (config) {
-            return Taxon(config);
+            return makeTaxonClient(config);
+        },
+        makeClient: function (config) {
+            return makeTaxonClient(config);
         },
         TaxonException: TaxonException,
         ServiceException: taxon.ServiceException,

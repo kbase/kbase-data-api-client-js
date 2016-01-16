@@ -306,13 +306,13 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'temp/taxon',
+                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
                         src: 'taxon_types.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'temp/assembly',
+                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
                         src: 'assembly_types.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
@@ -327,13 +327,13 @@ module.exports = function (grunt) {
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'temp/taxon',
+                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'temp/assembly',
+                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
@@ -520,8 +520,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build-thrift-libs', [
         'clean:temp',
         'mkdir:temp',
-        'shell:compileTaxon',
-        'shell:compileAssembly',
+        //'shell:compileTaxon',
+        //'shell:compileAssembly',
         'copy:thriftLib1',
         'copy:thriftLib2',
         'copy:thriftLib',

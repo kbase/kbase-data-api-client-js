@@ -71,11 +71,7 @@ assembly.ServiceException.prototype.read = function(input) {
         _size0 = _rtmp34.size;
         for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
-          if (_i5 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key6 = null;
           var val7 = null;
           key6 = input.readString().value;
@@ -853,7 +849,7 @@ assembly.AssemblyContig.prototype.write = function(output) {
   return;
 };
 
-assembly.VERSION = '0.1.0';
+assembly.VERSION = '{{version}}';
 
 return assembly;
 });

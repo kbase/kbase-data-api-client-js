@@ -11,7 +11,13 @@ define([], function () {
     function showErrorField(err, field) {
         if (err[field]) {
             // document.querySelector('#error  [data-field="' + field + '"]').style.display = 'block';
-            document.querySelector('#error  [data-field="' + field + '"] [data-element="value"]').innerHTML = err[field];
+            // console.log(document.querySelector('#error  [data-field="' + field + '"]'));
+            var field = document.querySelector('#error  [data-field="' + field + '"]');
+            if (field) {
+                field.innerHTML = err[field];
+            } else {
+                console.warn('Field ' + field + ' not defined for error display.');
+            }
         } else {
             // document.querySelector('#error  [data-field="' + field + '"]').style.display = 'none';
         }
@@ -20,7 +26,7 @@ define([], function () {
         var prototype = Object.getPrototypeOf(obj);
         while (prototype) {
             if (prototype.name === value) {
-                return true
+                return true;
             }
             prototype = Object.getPrototypeOf(prototype);
         }

@@ -62,29 +62,33 @@ module.exports = function (grunt) {
      * - determine the name of the "subject" and return it as the module object
      * - modest code repair to assist in reducing lint noise (and of course improve code reliability)
      */
-    function fixThrift1(content) {
-        var namespaceRe = /^if \(typeof ([^\s\+]+)/m,
-            namespace = content.match(namespaceRe)[1],
+    function fixThriftTypes(content) {
+        var namespaceRe = /^if \(typeof ([^\s\+]+)/m,            
+            namespace = content.match(namespaceRe)[1],            
             lintDecls = '/*global define */\n/*jslint white:true */',
             requireJsStart = 'define(["thrift"], function (Thrift) {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
             fixDeclRe = /if \(typeof ([^\s]+) === 'undefined'\) {\n[\s]*([^\s]+) = {};\n}/,
+            fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
             repairedContent = content
             .replace(fixDeclRe, 'var $1 = {};\n')
             .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
+            .replace(/!=([^=])/g, '!==$1')
+            .replace(fixRPosRe, '// removed rpos bug');
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
-    function fixThrift2(content) {
+    function fixThriftApi(content) {
         var lintDecls = '/*global define */\n/*jslint white:true */',
             namespaceRe = /^([^\/\s\.]+)/m,
             namespace = content.match(namespaceRe)[1],
             requireJsStart = 'define(["thrift", "./' + namespace + '_types"], function (Thrift, ' + namespace + ') {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
+            fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
             repairedContent = content
             .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
+            .replace(/!=([^=])/g, '!==$1')
+            .replace(fixRPosRe, '// removed rpos bug');
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
@@ -306,42 +310,54 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
                         src: 'taxon_types.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
                         src: 'assembly_types.js',
                         dest: makeBuildPath('kb/data/assembly'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/annotation/genome_annotation',
+                        src: 'genome_annotation_types.js',
+                        dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
                     }
                 ],
                 options: {
                     process: function (content) {
-                        return fixThrift1(content);
+                        return fixThriftTypes(content);
                     }
                 }
             },
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'bower_components/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/assembly'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/annotation/genome_annotation',
+                        src: 'thrift_service.js',
+                        dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
                     }
                 ],
                 options: {
                     process: function (content) {
-                        return fixThrift2(content);
+                        return fixThriftApi(content);
                     }
                 }
             },
@@ -396,6 +412,9 @@ module.exports = function (grunt) {
             },
             temp: {
                 src: 'temp'
+            },
+            deps: {
+                src: ['node_modules', 'bower_components']
             }
         },
         shell: {
@@ -421,6 +440,17 @@ module.exports = function (grunt) {
                     stderr: false
                 }
             },
+            compileGenomeAnnotation: {
+                command: [
+                    'thrift',
+                    '-gen js:jquery',
+                    '-out temp/genome_annotation',
+                    '<%= corepath %>/thrift/specs/annotation/genome_annotation/genome_annotation.thrift'
+                ].join(' '),
+                options: {
+                    stderr: false
+                }
+            },
            bowerUpdate: {
               command: [
                  'bower', 'update'
@@ -430,7 +460,7 @@ module.exports = function (grunt) {
         mkdir: {
             temp: {
                 options: {
-                    create: ['temp/taxon', 'temp/assembly']
+                    create: ['temp/taxon', 'temp/assembly', 'temp/genome_annotation']
                 }
             }
         },
@@ -535,4 +565,8 @@ module.exports = function (grunt) {
        'open:dev',
        'connect'
    ]);
+    
+   grunt.registerTask('clean-all', [
+       'clean:build', 'clean:dist', 'clean:temp', 'clean:deps'
+   ])
 };

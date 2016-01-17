@@ -178,11 +178,7 @@ taxon.ObjectInfo.prototype.read = function(input) {
         _size0 = _rtmp34.size;
         for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
-          if (_i5 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key6 = null;
           var val7 = null;
           key6 = input.readString().value;
@@ -882,11 +878,7 @@ taxon.ServiceException.prototype.read = function(input) {
         _size58 = _rtmp362.size;
         for (var _i63 = 0; _i63 < _size58; ++_i63)
         {
-          if (_i63 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key64 = null;
           var val65 = null;
           key64 = input.readString().value;
@@ -1322,7 +1314,7 @@ taxon.TypeException.prototype.write = function(output) {
   return;
 };
 
-taxon.VERSION = '0.1.0';
+taxon.VERSION = '{{version}}';
 
 return taxon;
 });

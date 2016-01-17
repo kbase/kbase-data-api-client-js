@@ -2216,11 +2216,7 @@ assembly.thrift_service_get_contig_lengths_result.prototype.read = function(inpu
         _size42 = _rtmp346.size;
         for (var _i47 = 0; _i47 < _size42; ++_i47)
         {
-          if (_i47 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key48 = null;
           var val49 = null;
           key48 = input.readString().value;
@@ -2532,11 +2528,7 @@ assembly.thrift_service_get_contig_gc_content_result.prototype.read = function(i
         _size60 = _rtmp364.size;
         for (var _i65 = 0; _i65 < _size60; ++_i65)
         {
-          if (_i65 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key66 = null;
           var val67 = null;
           key66 = input.readString().value;
@@ -2848,11 +2840,7 @@ assembly.thrift_service_get_contigs_result.prototype.read = function(input) {
         _size78 = _rtmp382.size;
         for (var _i83 = 0; _i83 < _size78; ++_i83)
         {
-          if (_i83 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
+          // removed rpos bug
           var key84 = null;
           var val85 = null;
           key84 = input.readString().value;

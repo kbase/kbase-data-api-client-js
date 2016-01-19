@@ -12,12 +12,14 @@
 define([
     './assembly/thrift_service',
     'thrift',
+    './common',
+
     // These don't have representations. Loading them causes the Thrift module
     // to be enhanced with additional properties (typically just a single
     //  property, the new capability added.)
     'thrift_transport_xhr',
     'thrift_protocol_binary'
-], function (assembly, Thrift) {
+], function (assembly, Thrift, common) {
     'use strict';
 
     var AssemblyException = function (reason, message, suggestion) {
@@ -41,51 +43,17 @@ define([
      */
     function makeAssemblyClient(config) {
         var objectReference,
-            dataAPIUrl,
+            serviceUrl,
             authToken,
             timeout;
+        
+        common.validateCommonApiArgs(config);
 
-        // Construction argument contract enforcement, throw useful exceptions
-        if (!config) {
-            throw new AssemblyException({
-                type: 'ArgumentError',
-                name: 'ConfigurationObjectMissing',
-                message: 'Configuration object missing',
-                suggestion: 'This is an API usage error; the taxon factory object is required to have a single configuration object as an argument.'
-            });
-        }
         objectReference = config.ref;
-        if (!objectReference) {
-            throw new AssemblyException({
-                type: 'ArgumentError',
-                name: 'ObjectReferenceMissing',
-                message: 'Object reference "ref" missing',
-                suggestion: 'The object reference is provided as in the "ref" argument to the config property'
-            });
-        }
-        dataAPIUrl = config.url;
-        if (!dataAPIUrl) {
-            throw new AssemblyException({
-                type: 'ArgumentError',
-                name: 'UrlMissing',
-                message: 'Cannot find a url for the data api',
-                suggestion: 'The url is provided as in the "url" argument property'
-            });
-
-        }
+        serviceUrl = config.url;
         authToken = config.token;
-        if (!authToken) {
-            throw new AssemblyException({
-                type: 'ArgumentError',
-                name: 'AuthTokenMissing',
-                message: 'No Authorization found; Authorization is required for the data api',
-                suggestion: 'The authorization is provided in the "token" argument" property'
-            });
-        }
         timeout = config.timeout;
-        if (!timeout) {
-            timeout = 30000;
-        }
+
 
         /**
          * Creates and returns an instance of the Taxon Thrift client. Note that
@@ -97,7 +65,7 @@ define([
          */
         function client() {
             try {
-                var transport = new Thrift.TXHRTransport(dataAPIUrl, {timeout: timeout}),
+                var transport = new Thrift.TXHRTransport(serviceUrl, {timeout: timeout}),
                     protocol = new Thrift.TBinaryProtocol(transport),
                     thriftClient = new assembly.thrift_serviceClient(protocol);
                 return thriftClient;
@@ -106,7 +74,7 @@ define([
                 if (ex.type && ex.name) {
                     throw ex;
                 }
-                throw new AssemblyException({
+                throw new common.ClientException({
                     type: 'ThriftError',
                     message: 'An error was encountered creating the thrift client objects',
                     suggestion: 'This could be a configuration or runtime error. Please consult the console for the error object',
@@ -176,7 +144,7 @@ define([
          */
         function getExternalSourceInfo() {
             return client().get_external_source_info(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -187,7 +155,7 @@ define([
          */
         function getStats() {
             return client().get_stats(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -200,7 +168,7 @@ define([
          */
         function getNumberContigs() {
             return client().get_number_contigs(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -212,7 +180,7 @@ define([
          */
         function getGCContent() {
             return client().get_gc_content(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -224,7 +192,7 @@ define([
          */
         function getDNASize() {
             return client().get_dna_size(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -236,7 +204,7 @@ define([
          */
         function getContigIds() {
             return client().get_contig_ids(authToken, objectReference, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -247,9 +215,6 @@ define([
          */
         function getContigLengths(contigs) {
             return client().get_contig_lengths(authToken, objectReference, contigs, true)
-                .then(function (result) {
-                    return result;
-                })
                 .catch(assembly.AttributeException, function (err) {
                     return undefined;
                 });
@@ -261,7 +226,7 @@ define([
          */
         function getContigGCContent(contigs) {
             return client().get_contig_gc_content(authToken, objectReference, contigs, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -273,7 +238,7 @@ define([
          */
         function getContigs(contigs) {
             return client().get_contigs(authToken, objectReference, contigs, true)
-                .catch(assembly.AttributeException, function (err) {
+                .catch(assembly.AttributeException, function () {
                     return undefined;
                 });
         }
@@ -302,7 +267,7 @@ define([
         makeClient: function (config) {
             return makeAssemblyClient(config);
         },
-        AssemblyException: AssemblyException,
+        ClientException: common.ClientException,
         ServiceException: assembly.ServiceException,
         AuthorizationException: assembly.AuthorizationException,
         AuthenticationException: assembly.AuthenticationException,

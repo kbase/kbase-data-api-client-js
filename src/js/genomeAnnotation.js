@@ -71,7 +71,11 @@ define([
                 });
             }
         }
-
+        
+        // TYPES
+        
+        var FeatureIdFilters = genomeAnnotation.Feature_id_filters;
+        
 
         /**
          *  Retrieve the Taxon associated with this GenomeAnnotation.
@@ -123,12 +127,13 @@ define([
         }
 
         /**
-         * Retrieve the number of contigs for this Assembly.
+         * Retrieve the count of each Feature type in this GenomeAnnotation.
          
          * @returns {Object<string,number>}
          */
-        function getFeatureTypeCounts() {
-            return client().get_feature_type_counts(authToken, objectReference, true)
+        // HMM skip for now...
+        function getFeatureTypeCounts(featureTypeList) {
+            return client().get_feature_type_counts(authToken, objectReference, featureTypeList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
@@ -137,22 +142,32 @@ define([
         /*
          * 
          * @typedef FeatureIdMapping
-         * struct Feature_id_mapping {
+         
+         struct Feature_id_mapping {
          1: map<string, list<string>> by_type = empty;
          2: map<string, map<string, map<string, list<string>>>> by_region = empty;
          3: map<string, list<string>> by_function = empty;
          4: map<string, list<string>> by_alias = empty;
          }
+         
+         struct Feature_id_filters {
+         1: list<string> type_list = [];
+         2: list<Region> region_list = [];
+         3: list<string> function_list = [];
+         4: list<string> alias_list = [];
+         }        
+         
          */
 
         /**
-         * Retrieve the total GC content for this Assembly.
+         * Retrieve Feature ids in this GenomeAnnotation, optionally filtered by type, region, function, alias.
          
          * @returns {Promise FeatureIdMapping}
          */
-        function getFeatureIds() {
-            return client().get_feature_ids(authToken, objectReference, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+        function getFeatureIds(featureIdFilters, groupType) {
+            var filters = new FeatureIdFilters(featureIdFilters);
+            return client().get_feature_ids(authToken, objectReference, filters, groupType, true)
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -162,9 +177,9 @@ define([
          
          * @returns {Promise Object<string, FeatureData}
          */
-        function getFeatures() {
-            return client().get_features(authToken, objectReference, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+        function getFeatures(featureIdList) {
+            return client().get_features(authToken, objectReference, featureIdList, true)
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -176,7 +191,7 @@ define([
          */
         function getProteins() {
             return client().get_proteins(authToken, objectReference, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -186,9 +201,9 @@ define([
          *
          * @returns {Promise Object(string -> Array(Region))}
          */
-        function getFeatureLocations() {
-            return client().get_feature_locations(authToken, objectReference, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+        function getFeatureLocations(featureIdList) {
+            return client().get_feature_locations(authToken, objectReference, featureIdList,true)
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -198,8 +213,8 @@ define([
          *
          * @returns {Promise Object(string -> Array(Region))}
          */
-        function getFeaturePublications() {
-            return client().get_feature_publications(authToken, objectReference, true)
+        function getFeaturePublications(featureIdList) {
+            return client().get_feature_publications(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
@@ -211,8 +226,8 @@ define([
          *
          * @returns {Promise Object(string -> string)}
          */
-        function getFeatureDNA() {
-            return client().get_feature_dna(authToken, objectReference, true)
+        function getFeatureDNA(featureIdList) {
+            return client().get_feature_dna(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
@@ -224,28 +239,41 @@ define([
          *
          * @returns {Promise Object(string -> string)}
          */
-        function getFeatureFunctions() {
-            return client().get_feature_functions(authToken, objectReference, true)
-                .catch(genomeAnnotation.AttributeException, function () {
-                    return;
-                });
-        }
-
-
-        /**
-         * Retrieve the CDS id for each mRNA id in this GenomeAnnotation.
-         *
-         * @param {Array<String>}
-         *
-         * @returns {Promise List<ObjectRef>}
-         */
-        function getCDSbyGene(geneIdList) {
-            return client().get_cds_by_gene(authToken, objectReference, geneIdList, true)
+        function getFeatureFunctions(featureIdList) {
+            return client().get_feature_functions(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
         
+        /**
+         * Retrieve the mRNA id for each Gene id in this GenomeAnnotation.
+         *
+         * @returns {Array(string -> List(String))}
+         */
+        function getFeatureAliases(featureIdList) {
+            return client().get_feature_aliases(authToken, objectReference, featureIdList, true)
+                .catch(genomeAnnotation.AttributeException, function () {
+                    return;
+                });
+        }
+        
+
+
+        /**
+         * Retrieve the CDS id for each Gene id in this GenomeAnnotation.
+         *
+         * @param {Array<String>}
+         *
+         * @returns {Promise List<ObjectRef>}
+         */
+        function getCDSByGene(geneIdList) {
+            return client().get_cds_by_gene(authToken, objectReference, geneIdList, true)
+                .catch(genomeAnnotation.AttributeException, function () {
+                    return;
+                });
+        }
+
         /**
          * Retrieve the CDS id for each mRNA id in this GenomeAnnotation.
          *
@@ -259,7 +287,7 @@ define([
                     return;
                 });
         }
-        
+
         /**
          * Retrieve the Gene id for each mRNA id in this GenomeAnnotation.
          *
@@ -283,7 +311,7 @@ define([
          */
         function getGeneBymRNA(mRNAIdList) {
             return client().get_gene_by_mrna(authToken, objectReference, mRNAIdList, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -297,7 +325,7 @@ define([
          */
         function getmRNAByCDS(cdsIdList) {
             return client().get_mrna_by_cds(authToken, objectReference, cdsIdList, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
@@ -330,7 +358,8 @@ define([
             getFeaturePublications: getFeaturePublications,
             getFeatureDNA: getFeatureDNA,
             getFeatureFunctions: getFeatureFunctions,
-            getCDSbyGene: getCDSbyGene,
+            getFeatureAliases: getFeatureAliases,
+            getCDSByGene: getCDSByGene,
             getCDSBymRNA: getCDSBymRNA,
             getGeneByCDS: getGeneByCDS,
             getGeneBymRNA: getGeneBymRNA,

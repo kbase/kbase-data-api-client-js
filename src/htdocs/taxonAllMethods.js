@@ -1,12 +1,11 @@
 require([
     'bluebird',
-    'kb/data/assembly',
+    'kb/data/taxon',
     'thrift',
     'kb/common/session',
-    'kb/common/html',
     'htdocs/utils',
     'yaml!config/config.yml'
-], function (Promise, Assembly, Thrift, fSession, html, utils, config) {
+], function (Promise, Taxon, Thrift, fSession, utils, config) {
     'use strict';
     function toArray(x) {
         return Array.prototype.slice.call(x);
@@ -27,15 +26,6 @@ require([
             }
         } else if (value === '') {
             displayValue = '* empty string *';
-        } else if (typeof value === 'object') {
-            var keys = Object.keys(value);
-            if (keys.length === 0) {
-                displayValue = '* empty object *';
-            } else {
-                displayValue = '<ol>' + keys.map(function (key) {
-                    return '<li>' + key + ' : ' + value[key] + '</li>';
-                }).join('\n') + '</ol>';
-            }
         } else {
             displayValue = value;
         }
@@ -77,25 +67,22 @@ require([
         }
     }
     var methods = [
-        'getAssemblyId', 'getGenomeAnnotation', 'getExternalSourceInfo', 'getStats', 
-        'getNumberContigs', 'getGCContent', 'getDNASize', 'getContigIds', 
-        ['getContigLengths', ['NODE_48_length_21448_cov_4.91263_ID_95']], 
-        ['getContigGCContent', ['NODE_48_length_21448_cov_4.91263_ID_95']],
-        ['getContigs', ['NODE_48_length_21448_cov_4.91263_ID_95']]
-    ];
-    
-    var xmethods = [
-        'getContigLengths', 'getContigGCContent',
-        'getContigs'            
+        'getParent',
+        'getChildren',
+        'getGenomeAnnotations',
+        'getScientificLineage',
+        'getScientificName',
+        'getTaxonomicId',
+        'getKingdom',
+        'getDomain',
+        'getGeneticCode',
+        'getAliases'
     ];
 
     var objectRef = utils.getParams().objectRef;
     document.getElementById('objectRef').innerHTML = objectRef;
 
     var content = '<table border="1">' + methods.map(function (method) {
-        if (method.pop) {
-            method = method[0];
-        }
         return '<tr data-field="' + method + '">' +
             '<td data-element="label"></td>' +
             '<td data-element="value"></td>' +
@@ -117,39 +104,29 @@ require([
         })
             .then(function (kbSession) {
                 console.log('timeout is ' + config.timeout);
-                return Assembly.make({
+                return Taxon.make({
                     ref: objectRef,
-                    url: config.assemblyUrl,
+                    url: config.taxonUrl,
                     token: kbSession.token,
                     timeout: config.timeout
                 });
             })
-            .then(function (assembly) {
+            .then(function (taxon) {
                 showStatus('Building methods to test...');
                 var start = new Date().getTime();
                 var promises = methods.map(function (method) {
-                    var methodName, methodArgs;
-                    if (method.pop) {
-                        methodName = method[0];
-                        methodArgs = method.slice(1);
-                    } else {
-                        methodName = method;
-                        methodArgs = [];
-                    }
                     return new Promise(function (resolve, reject) {
-                        showField(methodName, 'Loading...');
-                        assembly[methodName].apply(assembly, methodArgs)
+                        taxon[method]()
                             .then(function (value) {
                                 var elapsed = (new Date()).getTime() - start;
-                                console.log('GOT [' + methodName + ']' ); console.log(elapsed); console.log(' in ' + String(elapsed));
-                                showField(methodName, value, elapsed);
+                                showField(method, value, elapsed);
                                 resolve();
                             })
                             .catch(function (err) {
-                                if (err instanceof Assembly.AttributeException) {
-                                    showField(methodName, '* n/a to this object *');
+                                if (err instanceof Taxon.AttributeException) {
+                                    showField(method, '* n/a to this object *');
                                 } else {
-                                    showField(methodName, 'ERROR: ' + err.name + ':' + err.message);
+                                    showField(method, 'ERROR: ' + err.name + ':' + err.message);
                                 }
 //                                console.log('ERROR in ' + method);
 //                                console.log(err);
@@ -171,7 +148,7 @@ require([
             })
             .catch(function (err) {
                 showStatus('done, with error');
-                if (err instanceof Assembly.AssemblyException) {
+                if (err instanceof Taxon.ClientException) {
                     utils.showError(err);
                 } else if (err instanceof Thrift.TTransportError) {
                     utils.showError(err);
@@ -181,7 +158,7 @@ require([
                         reason: err.name,
                         message: err.getMessage()
                     });
-                } else if (err instanceof Thrift.AttributeException) {
+                } else if (err instanceof Taxon.AttributeException) {
                     utils.showError({
                         name: 'AttributeException', 
                         reason: err.name,

@@ -13,22 +13,14 @@ define([
     'bluebird',
     './taxon/thrift_service',
     'thrift',
+    './common',
     // These don't have representations. Loading them causes the Thrift module
     // to be enhanced with additional properties (typically just a single
     //  property, the new capability added.)
     'thrift_transport_xhr',
     'thrift_protocol_binary'
-], function (Promise, taxon, Thrift) {
+], function (Promise, taxon, Thrift, common) {
     'use strict';
-
-    var TaxonException = function (reason, message, suggestion) {
-        this.name = 'TaxonException';
-        this.reason = reason;
-        this.message = message;
-        this.suggestion = suggestion;
-    };
-    TaxonException.prototype = Object.create(Thrift.TException.prototype);
-    TaxonException.prototype.constructor = TaxonException;
 
     /**
      * Represents an interface to the Taxon data service.
@@ -42,51 +34,17 @@ define([
      */
     function makeTaxonClient(config) {
         var objectReference,
-            dataAPIUrl,
+            serviceUrl,
             authToken,
             timeout;
 
-        // Construction argument contract enforcement, throw useful exceptions
-        if (!config) {
-            throw new TaxonException({
-                type: 'ArgumentError',
-                name: 'ConfigurationObjectMissing',
-                message: 'Configuration object missing',
-                suggestion: 'This is an API usage error; the taxon factory object is required to have a single configuration object as an argument.'
-            });
-        }
-        objectReference = config.ref;
-        if (!objectReference) {
-            throw new TaxonException({
-                type: 'ArgumentError',
-                name: 'ObjectReferenceMissing',
-                message: 'Object reference "ref" missing',
-                suggestion: 'The object reference is provided as in the "ref" argument to the config property'
-            });
-        }
-        dataAPIUrl = config.url;
-        if (!dataAPIUrl) {
-            throw new TaxonException({
-                type: 'ArgumentError',
-                name: 'UrlMissing',
-                message: 'Cannot find a url for the data api',
-                suggestion: 'The url is provided as in the "url" argument property'
-            });
+        common.validateCommonApiArgs(config);
 
-        }
+        objectReference = config.ref;
+        serviceUrl = config.url;
         authToken = config.token;
-        if (!authToken) {
-            throw new TaxonException({
-                type: 'ArgumentError',
-                name: 'AuthTokenMissing',
-                message: 'No Authorization found; Authorization is required for the data api',
-                suggestion: 'The authorization is provided in the "token" argument" property'
-            });
-        }
         timeout = config.timeout;
-        if (!timeout) {
-            timeout = 30000;
-        }
+
 
         /**
          * Creates and returns an instance of the Taxon Thrift client. Note that
@@ -98,7 +56,7 @@ define([
          */
         function client() {
             try {
-                var transport = new Thrift.TXHRTransport(dataAPIUrl, {timeout: timeout}),
+                var transport = new Thrift.TXHRTransport(serviceUrl, {timeout: timeout}),
                     protocol = new Thrift.TBinaryProtocol(transport),
                     thriftClient = new taxon.thrift_serviceClient(protocol);
                 return thriftClient;
@@ -277,7 +235,7 @@ define([
         makeClient: function (config) {
             return makeTaxonClient(config);
         },
-        TaxonException: TaxonException,
+        ClientException: common.ClientException,
         ServiceException: taxon.ServiceException,
         AuthorizationException: taxon.AuthorizationException,
         AuthenticationException: taxon.AuthenticationException,

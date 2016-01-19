@@ -179,6 +179,12 @@ module.exports = function (grunt) {
             cwd: 'dist',
             src: ['**/*'],
             dest: '/'
+        },
+        {
+            name: 'kbase-service-clients-js',
+            cwd: 'dist',
+            src: ['**/*'],
+            dest: '/'
         }
     ],
         bowerCopy = bowerFiles.map(function (cfg) {

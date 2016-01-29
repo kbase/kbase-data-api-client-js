@@ -1,7 +1,7 @@
 require([
     'bluebird',
     'kb/data/taxon',
-    'thrift',
+    'kb/thrift/core',
     'kb/common/session',
     'htdocs/utils',
     'yaml!config/config.yml'

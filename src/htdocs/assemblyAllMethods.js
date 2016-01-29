@@ -1,7 +1,7 @@
 require([
     'bluebird',
     'kb/data/assembly',
-    'thrift',
+    'kb/thrift/core',
     'kb/common/session',
     'kb/common/html',
     'htdocs/utils',

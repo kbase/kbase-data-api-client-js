@@ -12,13 +12,13 @@
 define([
     'bluebird',
     './taxon/thrift_service',
-    'thrift',
+    'kb/thrift/core',
     './common',
     // These don't have representations. Loading them causes the Thrift module
     // to be enhanced with additional properties (typically just a single
     //  property, the new capability added.)
-    'thrift_transport_xhr',
-    'thrift_protocol_binary'
+    'kb/thrift/transport/xhr',
+    'kb/thrift/protocol/binary'
 ], function (Promise, taxon, Thrift, common) {
     'use strict';
 

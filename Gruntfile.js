@@ -66,7 +66,7 @@ module.exports = function (grunt) {
         var namespaceRe = /^if \(typeof ([^\s\+]+)/m,            
             namespace = content.match(namespaceRe)[1],            
             lintDecls = '/*global define */\n/*jslint white:true */',
-            requireJsStart = 'define(["thrift"], function (Thrift) {\n"use strict";',
+            requireJsStart = 'define(["kb/thrift/core"], function (Thrift) {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
             fixDeclRe = /if \(typeof ([^\s]+) === 'undefined'\) {\n[\s]*([^\s]+) = {};\n}/,
             fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
@@ -82,7 +82,7 @@ module.exports = function (grunt) {
         var lintDecls = '/*global define */\n/*jslint white:true */',
             namespaceRe = /^([^\/\s\.]+)/m,
             namespace = content.match(namespaceRe)[1],
-            requireJsStart = 'define(["thrift", "./' + namespace + '_types"], function (Thrift, ' + namespace + ') {\n"use strict";',
+            requireJsStart = 'define(["kb/thrift/core", "./' + namespace + '_types"], function (Thrift, ' + namespace + ') {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
             fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
             repairedContent = content
@@ -104,20 +104,7 @@ module.exports = function (grunt) {
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
-    function fixThriftBinaryLib(content) {
-        var lintDecls = '/*global define */\n/*jslint white:true */',
-            // namespaceRe = /^var (.+?) = /m,
-            // namespace = content.match(namespaceRe)[1],
-            namespace = 'Thrift',
-            requireJsStart = 'define(["thrift"], function (' + namespace + ') {\n"use strict";',
-            requireJsEnd = 'return ' + namespace + ';\n});',
-            repairedContent = content
-            .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
-
-        return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
-    }
-
+    
     // Bower magic.
     /*
      * This section sets up a mapping for bower packages.
@@ -170,9 +157,10 @@ module.exports = function (grunt) {
             src: 'css.js'
         },
         {
-            dir: 'thrift-binary-protocol',
-            cwd: 'src',
-            src: ['**/*']
+            dir: 'kbase-data-thrift-js',
+            cwd: 'src/js/lib',
+            src: ['**/*'],
+            dest: '/'
         },
         {
             name: 'kbase-common-js',
@@ -316,19 +304,19 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'taxon_types.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
                         src: 'assembly_types.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/annotation/genome_annotation',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
                         src: 'genome_annotation_types.js',
                         dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
@@ -343,19 +331,19 @@ module.exports = function (grunt) {
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/taxonomy/taxon',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/sequence/assembly',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-api/thrift/stubs/javascript/annotation/genome_annotation',
+                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
@@ -379,21 +367,6 @@ module.exports = function (grunt) {
                 options: {
                     process: function (content) {
                         return fixThriftLib(content);
-                    }
-                }
-            },
-            thriftBinaryLib: {
-                files: [
-                    {
-                        cwd: 'bower_components/thrift-binary-protocol/src',
-                        src: '*.js',
-                        dest: makeBuildPath('js/thrift'),
-                        expand: true
-                    }
-                ],
-                options: {
-                    process: function (content) {
-                        return fixThriftBinaryLib(content);
                     }
                 }
             }
@@ -560,8 +533,7 @@ module.exports = function (grunt) {
         //'shell:compileAssembly',
         'copy:thriftLib1',
         'copy:thriftLib2',
-        'copy:thriftLib',
-        'copy:thriftBinaryLib'
+        'copy:thriftLib'
     ]);
 
 

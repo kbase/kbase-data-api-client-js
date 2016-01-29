@@ -2,7 +2,7 @@ require([
     'bluebird',
     'kb/data/genomeAnnotation',
     'kb/service/client/Workspace',
-    'thrift',
+    'kb/thrift/core',
     'kb/common/session',
     'kb/common/html',
     'htdocs/utils',
@@ -233,13 +233,13 @@ require([
         return errorId;
     }
 
-//    var content = '<table border="1"><tr><th>Method</th><th>Result</th><th>Type</th><th>Time</th></tr>' + methods.map(function (method) {
-//        return '<tr data-field="' + method.name + '">' +
-//            '<td data-element="label" style="vertical-align: top;">' + method.name + '</td>' +
-//            '<td data-element="value"></td>' +
-//            '<td data-element="type"></td>' +
-//            '<td data-element="time"></td>' +
-//            '</tr>';
+    var content = '<table border="1"><tr><th>Method</th><th>Result</th><th>Type</th><th>Time</th></tr>' + methods.map(function (method) {
+        return '<tr data-field="' + method.name + '">' +
+            '<td data-element="label" style="vertical-align: top;">' + method.name + '</td>' +
+            '<td data-element="value"></td>' +
+            '<td data-element="type"></td>' +
+            '<td data-element="time"></td>' +
+            '</tr>';
     }).join('\n') + '</table>';
     document.querySelector('#result').innerHTML = content;
     try {

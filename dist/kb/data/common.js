@@ -1,7 +1,7 @@
 /*global define*/
 /*jslint white: true, browser: true*/
 define([
-    'thrift'
+    'kb/thrift/core'
 ], function (Thrift) {
     
     

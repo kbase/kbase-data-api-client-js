@@ -41,14 +41,18 @@ define([
             });
 
         }
-        if (!args.token) {
-            throw new ClientException({
-                type: 'ArgumentError',
-                name: 'AuthTokenMissing',
-                message: 'No Authorization found; Authorization is required for the data api',
-                suggestion: 'The authorization is provided in the "token" argument" property'
-            });
-        }
+        //if (!args.token) {
+            // patch:
+        //    args.token = '';
+       // }
+//        if (!args.token) {
+//            throw new ClientException({
+//                type: 'ArgumentError',
+//                name: 'AuthTokenMissing',
+//                message: 'No Authorization found; Authorization is required for the data api',
+//                suggestion: 'The authorization is provided in the "token" argument" property'
+//            });
+//        }
         if (!args.timeout) {
             args.timeout = 30000;
         }

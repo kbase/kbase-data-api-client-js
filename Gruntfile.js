@@ -1,4 +1,4 @@
-    /*global require, module */
+/*global require, module */
 /*jslint white: true */
 var path = require('path');
 var fs = require('fs');
@@ -63,8 +63,8 @@ module.exports = function (grunt) {
      * - modest code repair to assist in reducing lint noise (and of course improve code reliability)
      */
     function fixThriftTypes(content) {
-        var namespaceRe = /^if \(typeof ([^\s\+]+)/m,            
-            namespace = content.match(namespaceRe)[1],            
+        var namespaceRe = /^if \(typeof ([^\s\+]+)/m,
+            namespace = content.match(namespaceRe)[1],
             lintDecls = '/*global define */\n/*jslint white:true */',
             requireJsStart = 'define(["kb/thrift/core"], function (Thrift) {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
-    
+
     // Bower magic.
     /*
      * This section sets up a mapping for bower packages.
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
             cwd: 'dist',
             src: '**/*',
         },
-         {
+        {
             name: 'font-awesome',
             src: ['css/font-awesome.css', 'fonts/*']
         },
@@ -143,6 +143,10 @@ module.exports = function (grunt) {
         {
             name: 'yaml',
             dir: 'require-yaml'
+        },
+        {
+            name: 'json',
+            dir: 'requirejs-json'
         },
         {
             name: 'js-yaml',
@@ -224,7 +228,7 @@ module.exports = function (grunt) {
             } else {
                 cwd = 'bower_components/' + (cfg.dir || cfg.name) + (cwd ? '/' + cwd : '');
             }
-            
+
             var dest;
             if (cfg.dest) {
                 dest = cfg.dest;
@@ -274,6 +278,12 @@ module.exports = function (grunt) {
                             }
                             return true;
                         }
+                    },
+                    {
+                        cwd: 'test/data',
+                        src: '*.json',
+                        dest: makeRuntimePath('build/data'),
+                        expand: true
                     }
                 ]
             },
@@ -374,7 +384,7 @@ module.exports = function (grunt) {
         clean: {
             build: {
                 src: [
-                    makeBuildPath(), 
+                    makeBuildPath(),
                     makeDistPath()
                 ],
                 // We force, because our build directory may be up a level
@@ -430,11 +440,11 @@ module.exports = function (grunt) {
                     stderr: false
                 }
             },
-           bowerUpdate: {
-              command: [
-                 'bower', 'update'
-              ].join(' ')
-           }
+            bowerUpdate: {
+                command: [
+                    'bower', 'update'
+                ].join(' ')
+            }
         },
         mkdir: {
             temp: {
@@ -477,26 +487,24 @@ module.exports = function (grunt) {
             }
         },
         open: {
-           dev: {
-               path: 'http://localhost:8000/htdocs/'
-           }
+            dev: {
+                path: 'http://localhost:8000/htdocs/'
+            }
         },
-
         connect: {
-           server: {
-               port: 8000,
-               base: 'runtime/build',
-               keepalive: false,
-               onCreateServer: function (server, connect, options) {
-                   console.log('created...');
-               }
-           }
+            server: {
+                port: 8000,
+                base: 'runtime/build',
+                keepalive: false,
+                onCreateServer: function (server, connect, options) {
+                    console.log('created...');
+                }
+            }
         },
-
         // This is the path to the root of the Data API core
         // directory, which contains the Thrift specs and other cool things.
         corepath: 'node_modules/kbase-data-api'
-        
+
     });
 
     grunt.registerTask('build', [
@@ -510,7 +518,7 @@ module.exports = function (grunt) {
         // 'jsdoc:build',
         'markdown:build'
     ]);
-    
+
     grunt.registerTask('clean-build', [
         'clean:build'
     ]);
@@ -539,12 +547,12 @@ module.exports = function (grunt) {
 
     // Starts a little server and runs the app in a page.
     // Should be run after 'grunt build'.
-   grunt.registerTask('preview', [
-       'open:dev',
-       'connect'
-   ]);
-    
-   grunt.registerTask('clean-all', [
-       'clean:build', 'clean:dist', 'clean:temp', 'clean:deps'
-   ])
+    grunt.registerTask('preview', [
+        'open:dev',
+        'connect'
+    ]);
+
+    grunt.registerTask('clean-all', [
+        'clean:build', 'clean:dist', 'clean:temp', 'clean:deps'
+    ])
 };

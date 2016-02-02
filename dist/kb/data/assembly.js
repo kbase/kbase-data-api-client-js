@@ -90,7 +90,7 @@ define([
          * @returns {Promise<String>} 
          *
          */
-        function getAssemblyId() {
+        function assembly_id() {
             return client().get_assembly_id(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function (err) {
                     return undefined;
@@ -102,7 +102,7 @@ define([
          *
          * @returns {Array<ObjectReference>} 
          */
-        function getGenomeAnnotation() {
+        function genome_annotations() {
             return client().get_genome_annotations(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function (err) {
                     return undefined;
@@ -142,7 +142,7 @@ define([
          *
          * @returns {AssemblyExternalSourceInfo} 
          */
-        function getExternalSourceInfo() {
+        function external_source_info() {
             return client().get_external_source_info(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -153,7 +153,7 @@ define([
          Retrieve the Assembly stats.
          
          */
-        function getStats() {
+        function stats() {
             return client().get_stats(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -166,7 +166,7 @@ define([
          
          * @returns {Number}
          */
-        function getNumberContigs() {
+        function number_contigs() {
             return client().get_number_contigs(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -178,7 +178,7 @@ define([
          
          * @returns {Number}
          */
-        function getGCContent() {
+        function gc_content() {
             return client().get_gc_content(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -190,7 +190,7 @@ define([
          
          * @returns {Number}
          */
-        function getDNASize() {
+        function dna_size() {
             return client().get_dna_size(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -202,7 +202,7 @@ define([
          *
          * @returns {List<String>}
          */
-        function getContigIds() {
+        function contig_ids() {
             return client().get_contig_ids(authToken, objectReference, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -213,7 +213,7 @@ define([
          *
          * @returns {Map<String,Number>}
          */
-        function getContigLengths(contigs) {
+        function contig_lengths(contigs) {
             return client().get_contig_lengths(authToken, objectReference, contigs, true)
                 .catch(assembly.AttributeException, function (err) {
                     return undefined;
@@ -224,7 +224,7 @@ define([
          *
          * @returns {Map<String,Number>}
          */
-        function getContigGCContent(contigs) {
+        function contig_gc_content(contigs) {
             return client().get_contig_gc_content(authToken, objectReference, contigs, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -236,7 +236,7 @@ define([
          *
          * @returns {Map<String,AssemblyContig>}
          */
-        function getContigs(contigs) {
+        function contigs(contigs) {
             return client().get_contigs(authToken, objectReference, contigs, true)
                 .catch(assembly.AttributeException, function () {
                     return undefined;
@@ -246,25 +246,22 @@ define([
 
         // API
         return Object.freeze({
-            getAssemblyId: getAssemblyId,
-            getGenomeAnnotation: getGenomeAnnotation,
-            getExternalSourceInfo: getExternalSourceInfo,
-            getStats: getStats,
-            getNumberContigs: getNumberContigs,
-            getGCContent: getGCContent,
-            getDNASize: getDNASize,
-            getContigIds: getContigIds,
-            getContigLengths: getContigLengths,
-            getContigGCContent: getContigGCContent,
-            getContigs: getContigs
+            assembly_id: assembly_id,
+            genome_annotations: genome_annotations,
+            external_source_info: external_source_info,
+            stats: stats,
+            number_contigs: number_contigs,
+            gc_content: gc_content,
+            dna_size: dna_size,
+            contig_ids: contig_ids,
+            contig_lengths: contig_lengths,
+            contig_gc_content: contig_gc_content,
+            contigs: contigs
         });
     }
 
-    return Object.freeze({
-        make: function (config) {
-            return makeAssemblyClient(config);
-        },
-        makeClient: function (config) {
+    var api = {
+        client: function (config) {
             return makeAssemblyClient(config);
         },
         ClientException: common.ClientException,
@@ -274,5 +271,12 @@ define([
         ObjectReferenceException: assembly.ObjectReferenceException,
         AttributeException: assembly.AttributeException,
         TypeException: assembly.TypeException
-    });
+    };
+    
+    for (var propKey in Thrift) {
+        if (propKey.match(/Exception$/)) {
+            api[propKey] = Thrift[propKey];
+        }
+    }
+    return Object.freeze(api);   
 });

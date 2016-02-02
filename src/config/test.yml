@@ -1,10 +1,12 @@
 ## YAML Template for Taxon API testing
 # You'll need to edit this after building...
 ---
-cookieName: taxonApiTest
+cookieName: dataApiTest
 username: YOURUSERNAME
 password: YOURPASSWORD
 loginUrl: https://ci.kbase.us/services/authorization/Sessions/Login
-taxonUrl: http://euk.kbase.us/taxon
-timeout: 1000
-objectRef: 993/329/2
+taxonUrl: https://ci.kbase.us/services/data/taxon
+assemblyUrl: https://ci.kbase.us/services/data/assembly
+genomeAnnotationUrl: https://ci.kbase.us/services/data/annotation
+timeout: 10000
+testTimeout: 10000

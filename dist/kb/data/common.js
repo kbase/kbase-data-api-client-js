@@ -42,9 +42,9 @@ define([
 
         }
         //if (!args.token) {
-            // patch:
+        //    // patch:
         //    args.token = '';
-       // }
+        //}
 //        if (!args.token) {
 //            throw new ClientException({
 //                type: 'ArgumentError',

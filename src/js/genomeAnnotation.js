@@ -83,7 +83,7 @@ define([
          * @returns {Promise String} 
          *
          */
-        function getTaxon() {
+        function taxon() {
             return client().get_taxon(authToken, objectReference, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -95,7 +95,7 @@ define([
          *
          * @returns {Promise String} 
          */
-        function getAssembly() {
+        function assembly() {
             return client().get_assembly(authToken, objectReference, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -107,7 +107,7 @@ define([
          * 
          * @returns {Promise Array<String>} 
          */
-        function getFeatureTypes() {
+        function feature_types() {
             return client().get_feature_types(authToken, objectReference, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -119,7 +119,7 @@ define([
          *
          * @returns {Promise Object<string,string>}
          */
-        function getFeatureTypeDescriptions(featureTypeList) {
+        function feature_type_descriptions(featureTypeList) {
             return client().get_feature_type_descriptions(authToken, objectReference, featureTypeList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -132,7 +132,7 @@ define([
          * @returns {Object<string,number>}
          */
         // HMM skip for now...
-        function getFeatureTypeCounts(featureTypeList) {
+        function feature_type_counts(featureTypeList) {
             return client().get_feature_type_counts(authToken, objectReference, featureTypeList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -164,7 +164,7 @@ define([
          
          * @returns {Promise FeatureIdMapping}
          */
-        function getFeatureIds(featureIdFilters, groupType) {
+        function feature_ids(featureIdFilters, groupType) {
             var filters = new FeatureIdFilters(featureIdFilters);
             return client().get_feature_ids(authToken, objectReference, filters, groupType, true)
                 .catch(genomeAnnotation.AttributeException, function () {
@@ -177,7 +177,7 @@ define([
          
          * @returns {Promise Object<string, FeatureData}
          */
-        function getFeatures(featureIdList) {
+        function features(featureIdList) {
             return client().get_features(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -189,7 +189,7 @@ define([
          *
          * @returns {List<String>}
          */
-        function getProteins() {
+        function proteins() {
             return client().get_proteins(authToken, objectReference, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -201,7 +201,7 @@ define([
          *
          * @returns {Promise Object(string -> Array(Region))}
          */
-        function getFeatureLocations(featureIdList) {
+        function feature_locations(featureIdList) {
             return client().get_feature_locations(authToken, objectReference, featureIdList,true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -213,33 +213,31 @@ define([
          *
          * @returns {Promise Object(string -> Array(Region))}
          */
-        function getFeaturePublications(featureIdList) {
+        function feature_publications(featureIdList) {
             return client().get_feature_publications(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
 
-
         /**
          * Retrieve Feature DNA sequences in this GenomeAnnotation.
          *
          * @returns {Promise Object(string -> string)}
          */
-        function getFeatureDNA(featureIdList) {
+        function feature_dna(featureIdList) {
             return client().get_feature_dna(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
 
-
         /**
          * Retrieve the mRNA id for each Gene id in this GenomeAnnotation.
          *
          * @returns {Promise Object(string -> string)}
          */
-        function getFeatureFunctions(featureIdList) {
+        function feature_functions(featureIdList) {
             return client().get_feature_functions(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -251,14 +249,12 @@ define([
          *
          * @returns {Array(string -> List(String))}
          */
-        function getFeatureAliases(featureIdList) {
+        function feature_aliases(featureIdList) {
             return client().get_feature_aliases(authToken, objectReference, featureIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
-        
-
 
         /**
          * Retrieve the CDS id for each Gene id in this GenomeAnnotation.
@@ -267,7 +263,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getCDSByGene(geneIdList) {
+        function cds_by_gene(geneIdList) {
             return client().get_cds_by_gene(authToken, objectReference, geneIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -281,7 +277,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getCDSBymRNA(mRNAIdist) {
+        function cds_by_mrna(mRNAIdist) {
             return client().get_cds_by_mrna(authToken, objectReference, mRNAIdist, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -295,7 +291,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getGeneByCDS(CDSIdList) {
+        function gene_by_cds(CDSIdList) {
             return client().get_gene_by_cds(authToken, objectReference, CDSIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -309,7 +305,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getGeneBymRNA(mRNAIdList) {
+        function gene_by_mrna(mRNAIdList) {
             return client().get_gene_by_mrna(authToken, objectReference, mRNAIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -323,7 +319,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getmRNAByCDS(cdsIdList) {
+        function mrna_by_cds(cdsIdList) {
             return client().get_mrna_by_cds(authToken, objectReference, cdsIdList, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;
@@ -337,7 +333,7 @@ define([
          *
          * @returns {Promise List<ObjectRef>}
          */
-        function getmRNAByGene(geneIdList) {
+        function mrna_by_gene(geneIdList) {
             return client().get_mrna_by_gene(authToken, objectReference, geneIdList, true)
                 .catch(genomeAnnotation.AttributeException, function (err) {
                     return;
@@ -346,34 +342,31 @@ define([
 
         // API
         return Object.freeze({
-            getTaxon: getTaxon,
-            getAssembly: getAssembly,
-            getFeatureTypes: getFeatureTypes,
-            getFeatureTypeDescriptions: getFeatureTypeDescriptions,
-            getFeatureTypeCounts: getFeatureTypeCounts,
-            getFeatureIds: getFeatureIds,
-            getFeatures: getFeatures,
-            getProteins: getProteins,
-            getFeatureLocations: getFeatureLocations,
-            getFeaturePublications: getFeaturePublications,
-            getFeatureDNA: getFeatureDNA,
-            getFeatureFunctions: getFeatureFunctions,
-            getFeatureAliases: getFeatureAliases,
-            getCDSByGene: getCDSByGene,
-            getCDSBymRNA: getCDSBymRNA,
-            getGeneByCDS: getGeneByCDS,
-            getGeneBymRNA: getGeneBymRNA,
-            getmRNAByCDS: getmRNAByCDS,
-            getmRNAByGene: getmRNAByGene
+            taxon: taxon,
+            assembly: assembly,
+            feature_types: feature_types,
+            feature_type_descriptions: feature_type_descriptions,
+            feature_type_counts: feature_type_counts,
+            feature_ids: feature_ids,
+            features: features,
+            proteins: proteins,
+            feature_locations: feature_locations,
+            feature_publications: feature_publications,
+            feature_dna: feature_dna,
+            feature_functions: feature_functions,
+            feature_aliases: feature_aliases,
+            cds_by_gene: cds_by_gene,
+            cds_by_mrna: cds_by_mrna,
+            gene_by_cds: gene_by_cds,
+            gene_by_mrna: gene_by_mrna,
+            mrna_by_cds: mrna_by_cds,
+            mrna_by_gene: mrna_by_gene
         });
     }
 
-    return Object.freeze({
-        make: function (config) {
+    var api = {
+        client: function (config) {
             return makeClient(config);
-        },
-        makeClient: function (config) {
-            return makeAssemblyClient(config);
         },
         ClientException: common.ClientException,
         ServiceException: genomeAnnotation.ServiceException,
@@ -381,6 +374,13 @@ define([
         AuthenticationException: genomeAnnotation.AuthenticationException,
         ObjectReferenceException: genomeAnnotation.ObjectReferenceException,
         AttributeException: genomeAnnotation.AttributeException,
-        TypeException: genomeAnnotation.TypeException
-    });
+        TypeException: genomeAnnotation.TypeException,
+    };
+    
+    for (var propKey in Thrift) {
+        if (propKey.match(/Exception$/)) {
+            api[propKey] = Thrift[propKey];
+        }
+    }
+    return Object.freeze(api);    
 });

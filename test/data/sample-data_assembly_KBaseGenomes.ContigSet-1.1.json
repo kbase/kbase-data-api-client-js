@@ -1,0 +1,69 @@
+{
+    "results": {
+        "assembly_id": {
+            "type": "string",
+            "result": "kb|contigset.60"
+        },
+        "genome_annotations": {
+            "type": "set",
+            "result": [
+                "6/9/1"
+            ]
+        },
+        "external_source_info": {
+            "type": "object",
+            "result": {
+                "external_source": "SEED",
+                "external_source_id": "0000000.0",
+                "external_source_origination_date": "Unknown"
+            }
+        },
+        "stats": {
+            "type": "object",
+            "exception": "ServiceException"
+        },
+        "number_contigs": {
+            "type": "number",
+            "result": 1
+        },
+        "gc_content": {
+            "type": "number",
+            "exception": "ServiceException"
+        },
+        "dna_size": {
+            "type": "number",
+            "result": 0
+        },
+        "contig_ids": {
+            "type": "set",
+            "result": [
+                "GenericContig"
+            ]
+        },
+        "contig_lengths": {
+            "type": "object",
+            "result": {
+                "GenericContig": 0
+            },
+            "args": [
+                [
+                    "GenericContig"
+                ]
+            ]
+        },
+        "contig_gc_content": {
+            "type": "object",
+            "exception": "ServiceException"
+        },
+        "contigs": {
+            "type": "object",
+            "exception": "ServiceException"
+        }
+    },
+    "input": {
+        "ref": "6/1/2",
+        "url": "https://ci.kbase.us/services/data/assembly",
+        "token": "un=eapearson|tokenid=65921e8e-c923-11e5-a380-22000aef184d|expiry=1485894956|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=17f8a9ed6f717a2b9c45f5f33ba21bcef7c4507f2b0fbbba13e29d954baeea21cfa6b7638d0bb03f692cc0883b50cb0b2d7c4737d778181e5fdaa4cd5eb069e0af791470fb00e0542d6ecae66afa138f207d99dde0f9cc50940cffaca9198a562ee709a670988ae88f30c5d109645b6bcdb7362b987f4e38c1959bcea0807056",
+        "timeout": 120000
+    }
+}

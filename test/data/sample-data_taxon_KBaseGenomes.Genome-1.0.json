@@ -1,0 +1,38 @@
+{
+    "results": {
+        "parent": {},
+        "children": {
+            "result": []
+        },
+        "genome_annotations": {
+            "result": [
+                "6/9/1"
+            ]
+        },
+        "scientific_lineage": {
+            "result": [
+                "Bacteria"
+            ]
+        },
+        "scientific_name": {
+            "result": "Generic genome"
+        },
+        "taxonomic_id": {},
+        "kingdom": {},
+        "domain": {
+            "result": "Bacteria"
+        },
+        "genetic_code": {
+            "result": 11
+        },
+        "aliases": {
+            "result": []
+        }
+    },
+    "input": {
+        "ref": "6/9/1",
+        "url": "https://ci.kbase.us/services/data/taxon",
+        "token": "un=eapearson|tokenid=e60b9408-c8b2-11e5-9621-22000ab80e73|expiry=1485846639|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=cb7df74c582cf8cc5227f27afb1ab0658e1ff129a1e9c9007db98e0f3d3e1f45a3b5e14f7975608ab0caa4673b14681270e31dc47f8b031b8220ea600cc66ec2da7090ce3de6a72a1cd74ae12c1afabc24b766b3daf762f08b4bab5e8de1d4deeefbca22f9da2c11c4dbd8242b3f219537845c8be492b9362464a5a5cd99e66c",
+        "timeout": 120000
+    }
+}

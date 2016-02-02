@@ -1,0 +1,57 @@
+{
+    "results": {
+        "parent": {
+            "type": "string"
+        },
+        "children": {
+            "type": "array",
+            "result": []
+        },
+        "genome_annotations": {
+            "type": "array",
+            "result": [
+                "16/9/1"
+            ]
+        },
+        "scientific_lineage": {
+            "type": "array",
+            "result": [
+                "Bacteria",
+                "Proteobacteria",
+                "Alphaproteobacteria",
+                "Rhodobacterales",
+                "Rhodobacteraceae",
+                "Rhodobacter",
+                "Rhodobacter capsulatus SB 1003"
+            ]
+        },
+        "scientific_name": {
+            "type": "string",
+            "result": "Rhodobacter capsulatus SB1003"
+        },
+        "taxonomic_id": {
+            "type": "string"
+        },
+        "kingdom": {
+            "type": "string"
+        },
+        "domain": {
+            "type": "string",
+            "result": "Bacteria"
+        },
+        "genetic_code": {
+            "type": "number",
+            "result": 11
+        },
+        "aliases": {
+            "type": "array",
+            "result": []
+        }
+    },
+    "input": {
+        "ref": "16/9/1",
+        "url": "https://ci.kbase.us/services/data/taxon",
+        "token": "un=eapearson|tokenid=dc342b80-c924-11e5-aa44-22000ab4b42b|expiry=1485895585|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=7e0cf4a3a7824a809449765fdd782953568902b8de0b0d7c7a1ff6b3e1c3edbc6023bfde78b56a4a4664cab3f46c4945e6801947918b5aef395dbc7ab773b43e263f44e5258b65a862b55a409cf35a34510239092d5295aae0ad4e8308452919eb04100fae7dfa75095c70a6172d772313bae56727c72750f267e7eb40284dd1",
+        "timeout": 120000
+    }
+}

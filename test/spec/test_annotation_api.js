@@ -2,20 +2,18 @@
 /*jslint white:true*/
 define([
     'kb/common/session',
-    'kb/data/taxon',
     'yaml!config/config.yml',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-7.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-8.0.json',
-    'json!data/sample-data_taxon_KBaseGenomeAnnotations.Taxon-1.0.json'
- ],
-    function (Session, API, config, testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1) {
+    'kb/data/genomeAnnotation',
+    'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-6.0.json',
+    'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-7.0.json',
+    'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-7.0.json'
+],
+    function (Session, config, GenomeAnnotation, testDataGenome6, testDataGenome7, testDataGenome8) {
         'use strict';
         // Taxon API tests
         describe('Taxon API', function () {
             var token,
-                serviceUrl = config.taxonUrl,
+                serviceUrl = config.genomeAnnotationUrl,
                 username = config.username,
                 password = config.password,
                 loginUrl = config.loginUrl,  
@@ -33,7 +31,7 @@ define([
                     timeout: (options && options.timeout) || timeout,
                     token: token
                 };
-                return API.client(args);
+                return GenomeAnnotation.client(args);
             }
 
             beforeAll(function (done) {
@@ -65,7 +63,7 @@ define([
 
             // This works if all tests use default settings.
 
-            var testDataSets = [testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1];
+            var testDataSets = [testDataGenome6, testDataGenome7, testDataGenome8];
 
             testDataSets.forEach(function (testData) {
 
@@ -97,7 +95,7 @@ define([
                             .catch(function (err) {
                                 var expected = results.exception;
                                 if (expected) {
-                                    if (err instanceof API[expected]) {
+                                    if (err instanceof GenomeAnnotation[expected]) {
                                         done();
                                         return null;
                                     } else {

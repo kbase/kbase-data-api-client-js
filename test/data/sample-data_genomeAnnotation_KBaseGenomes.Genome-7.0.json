@@ -37483,7 +37483,7 @@
     "input": {
         "ref": "15/6/1",
         "url": "https://ci.kbase.us/services/data/annotation",
-        "token": "un=eapearson|tokenid=7e7ecf88-c927-11e5-93d3-22000ab4b42b|expiry=1485896716|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=3cca0bbc555caaa0677609add4808c083023bbade75438bcc4fb834b2755dc8c7e8776d0efec1b2d13d4a27a18749f9a946e0d2cdc579e9c7d035bbd71b0f5761a5edd3909df15ee7077a0eba8cf3ae52676ff84ee8d3f41dc2094533369d20213652301024453ed45f786b97a532e472fc1c7dba97527f19a0fa816ea647abd",
+        "token": "",
         "timeout": 120000
     }
 }

@@ -5,7 +5,7 @@ define([
     'kb/data/taxon',
     'yaml!config/config.yml',
     'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
+    'json!data/sample-data_taxon_KBaseGenomes.Genome-6.0.json',
     'json!data/sample-data_taxon_KBaseGenomes.Genome-7.0.json',
     'json!data/sample-data_taxon_KBaseGenomes.Genome-8.0.json',
     'json!data/sample-data_taxon_KBaseGenomeAnnotations.Taxon-1.0.json'

@@ -136,7 +136,7 @@
     "input": {
         "ref": "16/12/1",
         "url": "https://ci.kbase.us/services/data/assembly",
-        "token": "un=eapearson|tokenid=51f53730-c923-11e5-9621-22000ab80e73|expiry=1485894924|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=891ae948e2ec23a36d4199b596fe2a10688595fe6bf4c7060bfcc338e06eab93e2b7f06a29627d7ed817ad8b196a5483bcb31dd0d6f37ce50acd74a8008d352ddff7516a1afda3f51e81ce60ae3e1e62e7f93afe229e7f218e29c5cc8a8d68e47fe24a92526622fc4cd5a45cc2576ebb2406eea4a790d04e7c0034f8e622dd1d",
+        "token": "",
         "timeout": 120000
     }
 }

@@ -40388,7 +40388,7 @@
     "input": {
         "ref": "6/9/1",
         "url": "https://ci.kbase.us/services/data/annotation",
-        "token": "un=eapearson|tokenid=3c260228-c927-11e5-9621-22000ab80e73|expiry=1485896605|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=a8a993a47b2dfd90bddfbda6679dc6e1e19e3eb0aaae2257cab6bb586f2dcb68bebab4f8f18c72e391a6924e4b6c9d39b7e19cfd542ac12df0ca28f01aefc3efbd5787787d674afc7918cf84d0c23b4cae0f82a093724150caddeeb8dd4562a86e14f64c9dfcc7a5b946afdc64289c09ae9de05d333117f37af63077dd12a2b5",
+        "token": "",
         "timeout": 120000
     }
 }

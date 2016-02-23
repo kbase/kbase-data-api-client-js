@@ -3262,7 +3262,7 @@
     "input": {
         "ref": "4435/257/2",
         "url": "https://ci.kbase.us/services/data/assembly",
-        "token": "un=eapearson|tokenid=83760316-c923-11e5-9621-22000ab80e73|expiry=1485895007|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=7cba15f865cd549ebb4fa42e9225591addd096ca23d489f9a8420139b6e85a4683a20b94bc308666a98f539a6cf3248051092433e4633eb746e7237a3564212acf969f1ff4a738cf452528c36f047bc101205415b21baff43f29e39b0e0d12c5c5c4f84f7ae8acbdbac68287d2441eda5a0fe608fad4322e049dfa6cc3678bc1",
+        "token": "",
         "timeout": 120000
     }
 }

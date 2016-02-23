@@ -63,7 +63,7 @@
     "input": {
         "ref": "6/1/2",
         "url": "https://ci.kbase.us/services/data/assembly",
-        "token": "un=eapearson|tokenid=65921e8e-c923-11e5-a380-22000aef184d|expiry=1485894956|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=17f8a9ed6f717a2b9c45f5f33ba21bcef7c4507f2b0fbbba13e29d954baeea21cfa6b7638d0bb03f692cc0883b50cb0b2d7c4737d778181e5fdaa4cd5eb069e0af791470fb00e0542d6ecae66afa138f207d99dde0f9cc50940cffaca9198a562ee709a670988ae88f30c5d109645b6bcdb7362b987f4e38c1959bcea0807056",
+        "token": "",
         "timeout": 120000
     }
 }

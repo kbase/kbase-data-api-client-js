@@ -51,7 +51,7 @@
     "input": {
         "ref": "1011/212/3",
         "url": "https://ci.kbase.us/services/data/taxon",
-        "token": "un=eapearson|tokenid=f2be3b5c-c924-11e5-8e5e-22000aef184d|expiry=1485895623|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=89ad9ad0204d4b6707db16f41f0d19ad87584a100a298599b5d7eb17bdea5d60f0dfbfb19312b47c85c298bab00995cecf954744a3760164ded3009af9492cb3fa469284fc25d1829ec4aae4709161b332f0e8468f54e0d5ec0b3bff656ab31d81da824131f83cd6eb2edfd930257e4718ba4f6204ef0d188f3adf4c178e912d",
+        "token": "",
         "timeout": 120000
     }
 }

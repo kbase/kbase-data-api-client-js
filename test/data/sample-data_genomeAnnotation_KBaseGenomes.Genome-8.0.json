@@ -35429,7 +35429,7 @@
     "input": {
         "ref": "1011/212/3",
         "url": "https://ci.kbase.us/services/data/annotation",
-        "token": "un=eapearson|tokenid=9253f5d8-c927-11e5-9621-22000ab80e73|expiry=1485896750|client_id=eapearson|token_type=Bearer|SigningSubject=https://nexus.api.globusonline.org/goauth/keys/208701d8-c6b2-11e5-93d3-22000ab4b42b|sig=d37e71cc212d13352e5271d0867626532c2f98b35b101583d7cd79b101241c25d566de98e7f2cacc515e483e39d13dc550f30572aef34b6abf5a75d71465a5c963a975d6bc1cbae8df338661418f19b4448147e1d3b19bd66a0347de8bbb5bf19d3f50b9df0d82373bc11b9f75d73378a0893e7a1bc5e3126e29beeae2dad560",
+        "token": "",
         "timeout": 120000
     }
 }

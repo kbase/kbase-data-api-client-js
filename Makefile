@@ -3,6 +3,9 @@
 # and not an official supported build step.
 
 default: test
+	
+init:
+	npm install
 
 build:
 	grunt build

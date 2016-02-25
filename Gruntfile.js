@@ -314,19 +314,19 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'taxon_types.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
                         src: 'assembly_types.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
                         src: 'genome_annotation_types.js',
                         dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
@@ -341,19 +341,19 @@ module.exports = function (grunt) {
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/taxon'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/assembly'),
                         expand: true
                     },
                     {
-                        cwd: 'node_modules/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
                         src: 'thrift_service.js',
                         dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true

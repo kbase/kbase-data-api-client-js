@@ -1,0 +1,38 @@
+{
+    "results": {
+        "parent": {},
+        "children": {
+            "result": []
+        },
+        "genome_annotations": {
+            "result": [
+                "6/9/1"
+            ]
+        },
+        "scientific_lineage": {
+            "result": [
+                "Bacteria"
+            ]
+        },
+        "scientific_name": {
+            "result": "Generic genome"
+        },
+        "taxonomic_id": {},
+        "kingdom": {},
+        "domain": {
+            "result": "Bacteria"
+        },
+        "genetic_code": {
+            "result": 11
+        },
+        "aliases": {
+            "result": []
+        }
+    },
+    "input": {
+        "ref": "6/9/1",
+        "url": "https://ci.kbase.us/services/data/taxon",
+        "token": "",
+        "timeout": 120000
+    }
+}

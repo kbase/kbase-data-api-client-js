@@ -2,20 +2,19 @@
 /*jslint white:true*/
 define([
     'kb/common/session',
-    'kb/data/taxon',
+    'kb/data/assembly',
     'yaml!config/config.yml',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-6.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-7.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-8.0.json',
-    'json!data/sample-data_taxon_KBaseGenomeAnnotations.Taxon-1.0.json'
+    'json!data/sample-data_assembly_KBaseGenomes.ContigSet-1.1.json',
+    'json!data/sample-data_assembly_KBaseGenomes.ContigSet-2.0.json',
+    'json!data/sample-data_assembly_KBaseGenomes.ContigSet-3.0.json',
+    'json!data/sample-data_assembly_KBaseGenomeAnnotations.Assembly-1.0.json'
  ],
-    function (Session, API, config, testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1) {
+    function (Session, API, config, testDataContigSet1, testDataContigSet2, testDataContigSet3, testDataAssembly1) {
         'use strict';
         // Taxon API tests
-        describe('Taxon API', function () {
+        describe('Assembly API', function () {
             var token,
-                serviceUrl = config.taxonUrl,
+                serviceUrl = config.assemblyUrl,
                 username = config.username,
                 password = config.password,
                 loginUrl = config.loginUrl,  
@@ -54,7 +53,6 @@ define([
             beforeEach(function (done) {
                 originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
                 jasmine.DEFAULT_TIMEOUT_INTERVAL = testTimeout;
-                // console.log(jasmine);
                 done();
             });
 
@@ -65,10 +63,9 @@ define([
 
             // This works if all tests use default settings.
 
-            var testDataSets = [testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1];
+            var testDataSets = [testDataContigSet1, testDataContigSet2, testDataContigSet3, testDataAssembly1];
 
             testDataSets.forEach(function (testData) {
-
                 var methods = Object.keys(testData.results);
 
                 methods.forEach(function (methodName) {
@@ -89,7 +86,6 @@ define([
                                         }
                                         break;
                                 }
-                                
                                 expect(value).toEqual(results.result);
                                 done();
                                 return null;

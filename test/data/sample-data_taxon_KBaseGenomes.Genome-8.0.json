@@ -1,0 +1,57 @@
+{
+    "results": {
+        "parent": {
+            "type": "string"
+        },
+        "children": {
+            "type": "array",
+            "result": []
+        },
+        "genome_annotations": {
+            "type": "array",
+            "result": [
+                "1011/212/3"
+            ]
+        },
+        "scientific_lineage": {
+            "type": "array",
+            "result": [
+                "Bacteria",
+                "Proteobacteria",
+                "Deltaproteobacteria",
+                "Desulfovibrionales",
+                "Desulfovibrionaceae",
+                "Desulfovibrio",
+                "Desulfovibrio magneticus str. Maddingley MBC34"
+            ]
+        },
+        "scientific_name": {
+            "type": "string",
+            "result": "Desulfovibrio magneticus str. Maddingley MBC34"
+        },
+        "taxonomic_id": {
+            "type": "string"
+        },
+        "kingdom": {
+            "type": "string"
+        },
+        "domain": {
+            "type": "string",
+            "result": "Bacteria"
+        },
+        "genetic_code": {
+            "type": "number",
+            "result": 11
+        },
+        "aliases": {
+            "type": "array",
+            "result": []
+        }
+    },
+    "input": {
+        "ref": "1011/212/3",
+        "url": "https://ci.kbase.us/services/data/taxon",
+        "token": "",
+        "timeout": 120000
+    }
+}

@@ -4,13 +4,9 @@ define([
     'kb/common/session',
     'kb/data/taxon',
     'yaml!config/config.yml',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-1.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-6.0.json',
-    'json!data/sample-data_taxon_KBaseGenomes.Genome-7.0.json',
     'json!data/sample-data_taxon_KBaseGenomes.Genome-8.0.json',
-    'json!data/sample-data_taxon_KBaseGenomeAnnotations.Taxon-1.0.json'
  ],
-    function (Session, API, config, testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1) {
+    function (Session, API, config, testDataGenome8) {
         'use strict';
         // Taxon API tests
         describe('Taxon API', function () {
@@ -31,7 +27,7 @@ define([
                     ref: options.ref,
                     url: serviceUrl,
                     timeout: (options && options.timeout) || timeout,
-                    token: token
+                    token: 'xx'
                 };
                 return API.client(args);
             }
@@ -65,7 +61,7 @@ define([
 
             // This works if all tests use default settings.
 
-            var testDataSets = [testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1];
+            var testDataSets = [testDataGenome8];
 
             testDataSets.forEach(function (testData) {
 

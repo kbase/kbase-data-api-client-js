@@ -1,4 +1,4 @@
-    /*global require, module */
+/*global require, module */
 /*jslint white: true */
 var path = require('path');
 var fs = require('fs');
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
     // since it contains normal, un-minified javascript.
     var buildDir = runtimeDir + '/build';
 
-    var distDir = 'bower';
+    var distDir = 'dist';
 
     var testDir = runtimeDir + '/test';
 
@@ -62,29 +62,33 @@ module.exports = function (grunt) {
      * - determine the name of the "subject" and return it as the module object
      * - modest code repair to assist in reducing lint noise (and of course improve code reliability)
      */
-    function fixThrift1(content) {
+    function fixThriftTypes(content) {
         var namespaceRe = /^if \(typeof ([^\s\+]+)/m,
             namespace = content.match(namespaceRe)[1],
             lintDecls = '/*global define */\n/*jslint white:true */',
-            requireJsStart = 'define(["thrift"], function (Thrift) {\n"use strict";',
+            requireJsStart = 'define(["kb/thrift/core"], function (Thrift) {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
             fixDeclRe = /if \(typeof ([^\s]+) === 'undefined'\) {\n[\s]*([^\s]+) = {};\n}/,
+            fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
             repairedContent = content
             .replace(fixDeclRe, 'var $1 = {};\n')
             .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
+            .replace(/!=([^=])/g, '!==$1')
+            .replace(fixRPosRe, '// removed rpos bug');
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
-    function fixThrift2(content) {
+    function fixThriftApi(content) {
         var lintDecls = '/*global define */\n/*jslint white:true */',
             namespaceRe = /^([^\/\s\.]+)/m,
             namespace = content.match(namespaceRe)[1],
-            requireJsStart = 'define(["thrift", "' + namespace + '_types"], function (Thrift, ' + namespace + ') {\n"use strict";',
+            requireJsStart = 'define(["kb/thrift/core", "./' + namespace + '_types"], function (Thrift, ' + namespace + ') {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
+            fixRPosRe = /if \(.*? > 0 \) {\n\s*if \(input\.rstack\.length > input\.rpos\[input\.rpos\.length -1\] \+ 1\) {\n\s*input\.rstack\.pop\(\);\s*\}\s*\}/g,
             repairedContent = content
             .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
+            .replace(/!=([^=])/g, '!==$1')
+            .replace(fixRPosRe, '// removed rpos bug');
 
         return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
     }
@@ -93,19 +97,6 @@ module.exports = function (grunt) {
             namespaceRe = /^var (.+?) = /m,
             namespace = content.match(namespaceRe)[1],
             requireJsStart = 'define(["jquery"], function (jQuery) {\n"use strict";',
-            requireJsEnd = 'return ' + namespace + ';\n});',
-            repairedContent = content
-            .replace(/([^=!])==([^=])/g, '$1===$2')
-            .replace(/!=([^=])/g, '!==$1');
-
-        return [lintDecls, requireJsStart, repairedContent, requireJsEnd].join('\n');
-    }
-    function fixThriftBinaryLib(content) {
-        var lintDecls = '/*global define */\n/*jslint white:true */',
-            // namespaceRe = /^var (.+?) = /m,
-            // namespace = content.match(namespaceRe)[1],
-            namespace = 'Thrift',
-            requireJsStart = 'define(["thrift"], function (' + namespace + ') {\n"use strict";',
             requireJsEnd = 'return ' + namespace + ';\n});',
             repairedContent = content
             .replace(/([^=!])==([^=])/g, '$1===$2')
@@ -141,14 +132,9 @@ module.exports = function (grunt) {
             cwd: 'dist',
             src: '**/*',
         },
-         {
+        {
             name: 'font-awesome',
             src: ['css/font-awesome.css', 'fonts/*']
-        },
-        {
-            name: 'kbase-common-js',
-            cwd: 'src/js',
-            src: ['**/*']
         },
         {
             dir: 'requirejs',
@@ -157,6 +143,10 @@ module.exports = function (grunt) {
         {
             name: 'yaml',
             dir: 'require-yaml'
+        },
+        {
+            name: 'json',
+            dir: 'requirejs-json'
         },
         {
             name: 'js-yaml',
@@ -171,9 +161,22 @@ module.exports = function (grunt) {
             src: 'css.js'
         },
         {
-            dir: 'thrift-binary-protocol',
-            cwd: 'src',
-            src: ['**/*']
+            dir: 'kbase-data-thrift-js',
+            cwd: 'src/js/lib',
+            src: ['**/*'],
+            dest: '/'
+        },
+        {
+            name: 'kbase-common-js',
+            cwd: 'dist',
+            src: ['**/*'],
+            dest: '/'
+        },
+        {
+            name: 'kbase-service-clients-js',
+            cwd: 'dist',
+            src: ['**/*'],
+            dest: '/'
         }
     ],
         bowerCopy = bowerFiles.map(function (cfg) {
@@ -225,12 +228,19 @@ module.exports = function (grunt) {
             } else {
                 cwd = 'bower_components/' + (cfg.dir || cfg.name) + (cwd ? '/' + cwd : '');
             }
+
+            var dest;
+            if (cfg.dest) {
+                dest = cfg.dest;
+            } else {
+                dest = 'bower_components' + '/' + (cfg.dir || cfg.name);
+            }
             return {
                 nonull: true,
                 expand: true,
                 cwd: cwd,
                 src: sources,
-                dest: makeBuildPath('bower_components') + '/' + (cfg.dir || cfg.name)
+                dest: makeBuildPath(dest)
             };
         });
 
@@ -245,8 +255,8 @@ module.exports = function (grunt) {
             'bower-package': {
                 files: [
                     {
-                        cwd: 'runtime/build/js',
-                        src: '**/*',
+                        cwd: 'runtime/build',
+                        src: 'kb/data/**/*',
                         dest: makeDistPath(),
                         expand: true
                     }
@@ -268,6 +278,12 @@ module.exports = function (grunt) {
                             }
                             return true;
                         }
+                    },
+                    {
+                        cwd: 'test/data',
+                        src: '*.json',
+                        dest: makeRuntimePath('build/data'),
+                        expand: true
                     }
                 ]
             },
@@ -276,7 +292,7 @@ module.exports = function (grunt) {
                     {
                         cwd: 'src/js',
                         src: '**/*',
-                        dest: makeBuildPath('js'),
+                        dest: makeBuildPath('kb/data'),
                         expand: true
                     },
                     // Files for "eyeball" browser testing and development
@@ -298,30 +314,54 @@ module.exports = function (grunt) {
             thriftLib1: {
                 files: [
                     {
-                        cwd: 'temp/gen-js',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'taxon_types.js',
-                        dest: makeBuildPath('js/thrift/taxon'),
+                        dest: makeBuildPath('kb/data/taxon'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
+                        src: 'assembly_types.js',
+                        dest: makeBuildPath('kb/data/assembly'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
+                        src: 'genome_annotation_types.js',
+                        dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
                     }
                 ],
                 options: {
                     process: function (content) {
-                        return fixThrift1(content);
+                        return fixThriftTypes(content);
                     }
                 }
             },
             thriftLib2: {
                 files: [
                     {
-                        cwd: 'temp/gen-js',
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/taxonomy/taxon',
                         src: 'thrift_service.js',
-                        dest: makeBuildPath('js/thrift/taxon'),
+                        dest: makeBuildPath('kb/data/taxon'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/sequence/assembly',
+                        src: 'thrift_service.js',
+                        dest: makeBuildPath('kb/data/assembly'),
+                        expand: true
+                    },
+                    {
+                        cwd: 'bower_components/kbase-data-thrift-clients/libs/javascript/annotation/genome_annotation',
+                        src: 'thrift_service.js',
+                        dest: makeBuildPath('kb/data/genomeAnnotation'),
                         expand: true
                     }
                 ],
                 options: {
                     process: function (content) {
-                        return fixThrift2(content);
+                        return fixThriftApi(content);
                     }
                 }
             },
@@ -339,68 +379,84 @@ module.exports = function (grunt) {
                         return fixThriftLib(content);
                     }
                 }
-            },
-            thriftBinaryLib: {
-                files: [
-                    {
-                        cwd: 'bower_components/thrift-binary-protocol/src',
-                        src: 'thrift-js-binary-protocol.js',
-                        dest: makeBuildPath('js/thrift'),
-                        expand: true
-                    }
-                ],
-                options: {
-                    process: function (content) {
-                        return fixThriftBinaryLib(content);
-                    }
-                }
             }
         },
         clean: {
             build: {
-                src: [makeBuildPath(), makeDistPath()],
+                src: [
+                    makeBuildPath(),
+                    makeDistPath()
+                ],
                 // We force, because our build directory may be up a level
                 // in the runtime directory.
                 options: {
                     force: true
                 }
             },
+            runtime: {
+                src: []
+            },
+            dist: {
+                src: 'dist'
+            },
             temp: {
                 src: 'temp'
+            },
+            deps: {
+                src: ['node_modules', 'bower_components']
             }
         },
         shell: {
-            compileThrift: {
+            compileTaxon: {
                 command: [
                     'thrift',
                     '-gen js:jquery',
-                    '-o temp',
+                    '-out temp/taxon',
                     '<%= corepath %>/thrift/specs/taxonomy/taxon/taxon.thrift'
                 ].join(' '),
                 options: {
                     stderr: false
                 }
             },
-           bowerUpdate: {
-              command: [
-                 'bower', 'update'
-              ].join(' '),
-              options: {
-                 cwd: '..'
-              }
-           }
+            compileAssembly: {
+                command: [
+                    'thrift',
+                    '-gen js:jquery',
+                    '-out temp/assembly',
+                    '<%= corepath %>/thrift/specs/sequence/assembly/assembly.thrift'
+                ].join(' '),
+                options: {
+                    stderr: false
+                }
+            },
+            compileGenomeAnnotation: {
+                command: [
+                    'thrift',
+                    '-gen js:jquery',
+                    '-out temp/genome_annotation',
+                    '<%= corepath %>/thrift/specs/annotation/genome_annotation/genome_annotation.thrift'
+                ].join(' '),
+                options: {
+                    stderr: false
+                }
+            },
+            bowerUpdate: {
+                command: [
+                    'bower', 'update'
+                ].join(' ')
+            }
         },
         mkdir: {
             temp: {
                 options: {
-                    create: ['temp']
+                    create: ['temp/taxon', 'temp/assembly', 'temp/genome_annotation']
                 }
             }
         },
         bower: {
             install: {
                 options: {
-                   base: '..',
+                    // base: '..',
                     copy: false
                 }
             }
@@ -408,7 +464,7 @@ module.exports = function (grunt) {
         jsdoc: {
             build: {
                 src: ['src/js/*.js', 'src/docs/types.js'],
-                dest: 'src/htdocs/jsdocs'
+                dest: 'runtime/build/htdocs/jsdocs'
             }
         },
         markdown: {
@@ -417,7 +473,7 @@ module.exports = function (grunt) {
                     {
                         cwd: 'src/docs',
                         src: '*.md',
-                        dest: 'src/htdocs/docs',
+                        dest: 'runtime/build/htdocs/docs',
                         ext: '.html',
                         expand: true
                     }
@@ -431,37 +487,40 @@ module.exports = function (grunt) {
             }
         },
         open: {
-           dev: {
-               path: 'http://localhost:8000/htdocs/'
-           }
+            dev: {
+                path: 'http://localhost:8000/htdocs/'
+            }
         },
-
         connect: {
-           server: {
-               port: 8000,
-               base: 'runtime/build',
-               keepalive: false,
-               onCreateServer: function (server, connect, options) {
-                   console.log('created...');
-               }
-           }
+            server: {
+                port: 8000,
+                base: 'runtime/build',
+                keepalive: false,
+                onCreateServer: function (server, connect, options) {
+                    console.log('created...');
+                }
+            }
         },
-
         // This is the path to the root of the Data API core
         // directory, which contains the Thrift specs and other cool things.
-        corepath: 'core-develop'
-        
+        corepath: 'node_modules/kbase-data-api'
+
     });
 
     grunt.registerTask('build', [
         'shell:bowerUpdate',
-        'jsdoc:build',
-        'markdown:build',
         'copy:runtime',
         'copy:bower',
         'copy:build',
         'build-thrift-libs',
-        'copy:bower-package'
+        'copy:bower-package',
+        // disable temporarily -- it breaks under some generated code.
+        // 'jsdoc:build',
+        'markdown:build'
+    ]);
+
+    grunt.registerTask('clean-build', [
+        'clean:build'
     ]);
 
     // Do a build w/o Thrift for TravisCI
@@ -478,19 +537,22 @@ module.exports = function (grunt) {
     grunt.registerTask('build-thrift-libs', [
         'clean:temp',
         'mkdir:temp',
-        'shell:compileThrift',
+        //'shell:compileTaxon',
+        //'shell:compileAssembly',
         'copy:thriftLib1',
-        'copy:thriftLib2'
-
-            //'copy:thriftLib',
-            //'copy:thriftBinaryLib'
+        'copy:thriftLib2',
+        'copy:thriftLib'
     ]);
 
 
     // Starts a little server and runs the app in a page.
     // Should be run after 'grunt build'.
-   grunt.registerTask('preview', [
-       'open:dev',
-       'connect'
-   ]);
+    grunt.registerTask('preview', [
+        'open:dev',
+        'connect'
+    ]);
+
+    grunt.registerTask('clean-all', [
+        'clean:build', 'clean:dist', 'clean:temp', 'clean:deps'
+    ])
 };

@@ -1,0 +1,59 @@
+language: python
+python:
+  - "2.7"
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/core-develop/.cache/pip
+    - bower_components
+    - node_modules
+
+
+before_install:
+  - git clone -b develop https://github.com/kbase/data_api.git core-develop
+  - ( cd core-develop && git submodule init && git submodule update )
+  - npm install -g bower
+ 
+install:
+  - cd core-develop
+  - pip install -r requirements.txt
+  - python setup.py install -vv
+  - cd ..
+  - npm install
+  - grunt build-travis
+
+before_script:
+  - printf "Build dir = $TRAVIS_BUILD_DIR\n"
+#  - ls /a/b/c/d/e # fail-fast
+  # Run services
+  - data_api_start_service.py --service taxon --config deployment.cfg > taxonAPI.out 2>&1 &
+  - data_api_start_service.py --service assembly --config deployment.cfg > assemblyAPI.out 2>&1 &
+#  - data_api_start_service.py --service genomeannotation --config deployment.cfg > gaAPI.out 2>&1 &
+  - export DISPLAY=:99.0
+  - export CHROME_BIN=chromium-browser
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3 # give xvfb some time to start
+  - CORSPROXY_PORT=8000 ./node_modules/corsproxy/bin/corsproxy &
+  - redis-server redis.conf &
+
+script:
+  - ./node_modules/karma-cli/bin/karma start test/karma.conf.js
+
+env:
+  - KB_DEPLOY_URL="dir_cache"
+  - KB_DEPLOY_URL="dir_nocache"
+#  - KB_REDIS_HOST=localhost; KB_NOSE_CFG=nose-ci.cfg
+#  - KB_REDIS_HOST="";        KB_NOSE_CFG=nose-ci.cfg
+
+after_success:
+#  - codecov
+  - kill $(cat taxonAPI.pid)
+  - kill $(cat assemblyAPI.pid)
+#  - kill $(cat genomeannotationAPI.pid)
+# Make service logs easy to inspect, then clean up
+  - cat taxonAPI.out
+  - cat assemblyAPI.out
+  - cat gaAPI.out
+  - rm -f taxonAPI.out assemblyAPI.out gaAPI.out

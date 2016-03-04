@@ -1,0 +1,202 @@
+{
+    "results": {
+        "assembly_id": {
+            "type": "string",
+            "result": "kb|g.26904.contigset"
+        },
+        "genome_annotations": {
+            "type": "set",
+            "result": [
+                "4258/21828/1"
+            ]
+        },
+        "external_source_info": {
+            "type": "object",
+            "result": {
+                "external_source": "KBase Central Store",
+                "external_source_id": "",
+                "external_source_origination_date": "Unknown"
+            }
+        },
+        "stats": {
+            "type": "object",
+            "result": {
+                "num_contigs": 78,
+                "dna_size": 5297946,
+                "gc_content": 0.5051344426689136
+            }
+        },
+        "number_contigs": {
+            "type": "number",
+            "result": 78
+        },
+        "gc_content": {
+            "type": "number",
+            "result": 0.5051344426689136
+        },
+        "dna_size": {
+            "type": "number",
+            "result": 5297946
+        },
+        "contig_ids": {
+            "type": "set",
+            "result": [
+                "kb|g.26904.c.21",
+                "kb|g.26904.c.20",
+                "kb|g.26904.c.23",
+                "kb|g.26904.c.22",
+                "kb|g.26904.c.25",
+                "kb|g.26904.c.24",
+                "kb|g.26904.c.27",
+                "kb|g.26904.c.26",
+                "kb|g.26904.c.29",
+                "kb|g.26904.c.28",
+                "kb|g.26904.c.74",
+                "kb|g.26904.c.9",
+                "kb|g.26904.c.72",
+                "kb|g.26904.c.69",
+                "kb|g.26904.c.73",
+                "kb|g.26904.c.71",
+                "kb|g.26904.c.67",
+                "kb|g.26904.c.58",
+                "kb|g.26904.c.59",
+                "kb|g.26904.c.70",
+                "kb|g.26904.c.66",
+                "kb|g.26904.c.76",
+                "kb|g.26904.c.77",
+                "kb|g.26904.c.38",
+                "kb|g.26904.c.39",
+                "kb|g.26904.c.36",
+                "kb|g.26904.c.37",
+                "kb|g.26904.c.34",
+                "kb|g.26904.c.35",
+                "kb|g.26904.c.32",
+                "kb|g.26904.c.33",
+                "kb|g.26904.c.30",
+                "kb|g.26904.c.31",
+                "kb|g.26904.c.14",
+                "kb|g.26904.c.15",
+                "kb|g.26904.c.16",
+                "kb|g.26904.c.17",
+                "kb|g.26904.c.10",
+                "kb|g.26904.c.11",
+                "kb|g.26904.c.12",
+                "kb|g.26904.c.13",
+                "kb|g.26904.c.75",
+                "kb|g.26904.c.18",
+                "kb|g.26904.c.19",
+                "kb|g.26904.c.56",
+                "kb|g.26904.c.68",
+                "kb|g.26904.c.50",
+                "kb|g.26904.c.60",
+                "kb|g.26904.c.51",
+                "kb|g.26904.c.52",
+                "kb|g.26904.c.6",
+                "kb|g.26904.c.7",
+                "kb|g.26904.c.4",
+                "kb|g.26904.c.5",
+                "kb|g.26904.c.2",
+                "kb|g.26904.c.3",
+                "kb|g.26904.c.0",
+                "kb|g.26904.c.1",
+                "kb|g.26904.c.54",
+                "kb|g.26904.c.57",
+                "kb|g.26904.c.8",
+                "kb|g.26904.c.55",
+                "kb|g.26904.c.65",
+                "kb|g.26904.c.64",
+                "kb|g.26904.c.49",
+                "kb|g.26904.c.48",
+                "kb|g.26904.c.61",
+                "kb|g.26904.c.53",
+                "kb|g.26904.c.63",
+                "kb|g.26904.c.62",
+                "kb|g.26904.c.43",
+                "kb|g.26904.c.42",
+                "kb|g.26904.c.41",
+                "kb|g.26904.c.40",
+                "kb|g.26904.c.47",
+                "kb|g.26904.c.46",
+                "kb|g.26904.c.45",
+                "kb|g.26904.c.44"
+            ]
+        },
+        "contig_lengths": {
+            "type": "object",
+            "result": {
+                "kb|g.26904.c.21": 1731,
+                "kb|g.26904.c.20": 598,
+                "kb|g.26904.c.23": 31023,
+                "kb|g.26904.c.22": 22643,
+                "kb|g.26904.c.25": 2845
+            },
+            "args": [
+                [
+                    "kb|g.26904.c.21",
+                    "kb|g.26904.c.20",
+                    "kb|g.26904.c.23",
+                    "kb|g.26904.c.22",
+                    "kb|g.26904.c.25"
+                ]
+            ]
+        },
+        "contig_gc_content": {
+            "type": "object",
+            "result": {
+                "kb|g.26904.c.21": 0.4714038128249567,
+                "kb|g.26904.c.20": 0.48327759197324416,
+                "kb|g.26904.c.23": 0.4684588853431325,
+                "kb|g.26904.c.22": 0.535264761736519,
+                "kb|g.26904.c.25": 0.47908611599297013
+            },
+            "args": [
+                [
+                    "kb|g.26904.c.21",
+                    "kb|g.26904.c.20",
+                    "kb|g.26904.c.23",
+                    "kb|g.26904.c.22",
+                    "kb|g.26904.c.25"
+                ]
+            ]
+        },
+        "contigs": {
+            "type": "object",
+            "result": {
+                "kb|g.26904.c.21": {
+                    "contig_id": "kb|g.26904.c.21",
+                    "sequence": "ctcttccgcttcccgctggcgccggtcaagttcatcctgacgctctttttcttcacgcatctgacgcttaagctctgcctgatattccttttcttcctgcgctttttccagcaatgccactttgtccagaaactgttgcctgacactatcccagtcagaattatcttccaggttaagaaaggcaattttctcactgacagcagcgtaagcctctctttccttacgaagctggtcatatttgctttgccagttattaatcgttacaccagccaacagagtcttcgccttaaatctccaggcggaatcaacaatccgttgcattgcacggctggccttctttctggtggtatgaaattcctcacgacgtctggcaagctgctccttttcctgtcgtattccccgggctatagcggcattgacagtttcattaaaatcccgttctctctgaaccagctctgaaacggcctgctcaaatgctgctgttttctttctgagtctccggtaaataaaaaaacgaaataaaattgcaaatacggtaagcaaaccaaaaaacaaaccaataatacctgccggattcgatactgcatcaataaagcgctcattaagatttatcagcgccctgaccgccacataaatcccccagagaataacgcaaattaaaatcaggacaaatcccgctgcattatcatctttttttcttcctgccatgacttttctttatttccttctcagtaactgaatatttatgattaacgccctccggaaatatttatacccggaaggatgtccggctttatgatgctcgccaatacagggttaactgcaggctgagcacagatgcctctgctatttcagtgtcagattaatactgattaccggaacaaataggcagatgcgtgaatccgggtttgctggccatataaagcggcgcacaggtgggtttacgcggctcagtgaccggtacagactcatctttctcagccaccgacggttgtggcaccttccggacagccactgattttttcttctgaaccggcttcgtggtgacaggtgatttcacctgacgtttgccggatgccactccataaccggaacaaaagcgtttcgactgactcagacttccgtcattacagacaaagcgcccgtctgacgtacagtgtgaaataccacctttagcacccgagcagggttttcttccccgcgcagcatctgcctgaaccgaaaataaaagccccacaaacagaacacagataattttcttcatttaaaaactcacacattgttattgctgatatgccagagttatcaggatgatgaaacattccgccagcgttgtcataagccggaataatgtcacatccacacctgacatatatccatcgctgtttatttctgttctgccctccctgctccggctcatgtctgaacgtaccgctgctgtttcagatgacgcagcaacaccctgccctccggcataaatgttgttccgtaacgaaccagtcctgcgtctttaagttctgcatcaatgacataatgcaactcaccaggctgagtctgctcctgcatcgtcacgtcaacacgcttaatacgtggctcatacttcagcagaacatctgaaagcacgcgcatcagttgatgtgccgtacccggcattccctgcaaaatggttgtcatatccggcagcccatagtccggaagatgtttaaggctcccggcccggtgtgaacaaaa",
+                    "length": 1731,
+                    "gc_content": 0.4714038128249567,
+                    "md5": "c5f8ea0bc6f761994e53558cc23086f1",
+                    "name": null,
+                    "description": null,
+                    "is_complete": false,
+                    "is_circular": true
+                },
+                "kb|g.26904.c.20": {
+                    "contig_id": "kb|g.26904.c.20",
+                    "sequence": "ccgtcggtttccagcgtgacctgctcctgatttgcctggcgcagcgtggaaaccgtccagtccttgacctccagaaataccagtccgttctccggatcaataatgacaaaatccggatgccggtttttccgtcccaccggaatatcgtaccagacaaggcagtcatcattcagaaagctctccagtcgtgaagccaccctcctctccccaggcgtcattctctcctcagtggacgccgatacatttatcagtttcgccataaacgcaccttaatctgtgaacaaaaaaataattatcaccgacacccacgacgttatatcgtgggtgtcggtttattcagaaataaaaacagaatcaataacataaccggaataccgtgaaccatgctgcaggatatctgcagatatcccttctgttatatccggccgaaataaaatcagaacactgattgtcaggcagcttcattttccgcgtactccaggctctgcagatactgcagtgctgccgggtcagccacatattccacctgcccgtggtgacgctccacttcattaatgattttctcaagcttcacgcggaaaaattctttacgcaggtt",
+                    "length": 598,
+                    "gc_content": 0.48327759197324416,
+                    "md5": "ef860e940bd48021a9cd8427fb72efa0",
+                    "name": null,
+                    "description": null,
+                    "is_complete": false,
+                    "is_circular": true
+                }
+            },
+            "args": [
+                [
+                    "kb|g.26904.c.21",
+                    "kb|g.26904.c.20"
+                ]
+            ]
+        }
+    },
+    "input": {
+        "ref": "4258/21827/1",
+        "url": "https://ci.kbase.us/services/data/assembly",
+        "token": "",
+        "timeout": 120000
+    }
+}

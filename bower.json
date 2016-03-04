@@ -1,44 +1,47 @@
 {
-  "name": "JsLibrary",
-  "version": "0.0.1",
-  "ignore": [
-     ".*",
-     "/bin",
-     "/build",
-     "/CHANGELOG",
-     "/config",
-     "/data_loading",
-     "/docs",
-     "/examples",
-     "/experiments",
-     "/GolgiVolvox.png",
-     "/jslib",
-     "/lib",
-     "/README.md",
-     "/redis.conf",
-     "/requirements*",
-     "/run_tests.sh",
-     "/setup.py",
-     "/specs",
-     "/temp",
-     "/thrift/",
-     "/version.py",
-     "/test_resources"
+  "name": "kbase-data-api-js-clients",
+  "description": "Javascript Clients for the KBase Data API",
+  "author": [
+    "kbase"
   ],
+  "keywords": [
+    "kbase",
+    "data",
+    "api",
+    "client"
+  ],
+  "ignore": [
+    ".*",
+    "/runtime",
+    "/test",
+    "/tools",
+    "/bower_components",
+    "/node_modules",
+    "/temp"
+  ],
+  "moduleType": "amd-library",
+  "main": "install.yml",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eapearson/kbase-data-api-js-clients"
+  },
   "dependencies": {
-    "bluebird": "3.0.5",
-    "requirejs": "2.1.20",
-    "kbase-common-js": "eapearson/kbase-common-js#master",
-    "thrift-binary-protocol": "eapearson/thrift-js-binary-protocol#master"
+    "bluebird": "~3.1.0",
+    "requirejs": "^2.0.0",
+    "kbase-common-js": "^1.0.0",
+    "kbase-service-clients-js": "^1.0.0",
+    "kbase-data-thrift-js": "^1.0.0"
   },
   "devDependencies": {
     "text": "requirejs-text#2.0.14",
     "requirejs-text": "2.0.14",
     "require-yaml": "0.1.2",
-    "thrift": "eapearson/thrift#master",
     "jquery": "2.1.4",
     "bootstrap": "3.3.5",
     "require-css": "0.1.8",
-    "font-awesome": "4.4.0"
-  }
+    "font-awesome": "4.4.0",
+    "requirejs-json": "^0.0.3",
+    "kbase-data-thrift-clients": "^1.0.0"
+  },
+  "license": "SEE LICENSE IN LICENSE"
 }

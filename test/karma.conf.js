@@ -28,7 +28,8 @@ module.exports = function(config) {
         'karma-requirejs',
         'karma-chrome-launcher',
         'karma-firefox-launcher',
-        'karma-safari-launcher'
+        'karma-safari-launcher',
+        'karma-spec-reporter'
     ],
 
 
@@ -43,10 +44,11 @@ module.exports = function(config) {
        * It's cleaner to just load the list of them by hand, then
        * have the Require apparatus take over.
        */
-      {pattern: 'runtime/build/js/*.js', included: false},
-      {pattern: 'runtime/build/js/**/*.js', included: false},
+      {pattern: 'runtime/build/kb/**/*.js', included: false},
       {pattern: 'runtime/build/bower_components/**/*.js', included: false},
       {pattern: 'test/spec/**/*.js', included: false},
+      {pattern: 'runtime/build/data/**/*.json', included: false},
+      {pattern: 'runtime/build/config/**/*.yml', included: false},
       //{pattern: 'runtime/build/config/config.yml', included: false},
 
       'test/main-test.js',
@@ -78,7 +80,7 @@ module.exports = function(config) {
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     //reporters: ['progress', 'coverage'],
-    reporters: ['progress'],
+    reporters: ['spec'],
 
 //    coverageReporter: {
 //      type : 'html',
@@ -100,13 +102,18 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
+    
+    captureTimeout: 60000,
+    
+    browserNoActivityTimeout: 60000,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     // browsers: ['PhantomJS', 'Chrome', 'Firefox', 'Safari'],
 
-    browsers: [chrome_browser, firefox_browser],
+    // browsers: [chrome_browser, firefox_browser],
+    browsers: [chrome_browser],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

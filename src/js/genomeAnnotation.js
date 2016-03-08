@@ -165,12 +165,18 @@ define([
          * @returns {Promise FeatureIdMapping}
          */
         function feature_ids(featureIdFilters, groupType) {
-            var filters = new FeatureIdFilters(featureIdFilters), regions;
-            // convert basic object for regions to thrift expected type
-            regions = filters.region_list.map(function (region_element) {
-                return new genomeAnnotation.Region(region_element);
-            });
-            filters.region_list = regions;
+            var filters, regions;
+            
+            if (featureIdFilters.hasOwnProperty("region_list")) {
+                // convert basic object for regions to thrift expected type
+                regions = featureIdFilters.region_list.map(function (region_element) {
+                    return new genomeAnnotation.Region(region_element);
+                });
+                
+                featureIdFilters.region_list = regions;
+            }
+            
+            filters = new FeatureIdFilters(featureIdFilters);
             return client().get_feature_ids(authToken, objectReference, filters, groupType, true)
                 .catch(genomeAnnotation.AttributeException, function () {
                     return;

@@ -7,9 +7,10 @@ define([
     'json!data/sample-data_assembly_KBaseGenomes.ContigSet-1.1.json',
     'json!data/sample-data_assembly_KBaseGenomes.ContigSet-2.0.json',
     'json!data/sample-data_assembly_KBaseGenomes.ContigSet-3.0.json',
-    'json!data/sample-data_assembly_KBaseGenomeAnnotations.Assembly-1.0.json'
+    'json!data/sample-data_assembly_KBaseGenomeAnnotations.Assembly-1.0.json',
+    'json!data/sample-data_assembly_KBaseGenomeAnnotations.Assembly-4.0.json'
  ],
-    function (Session, API, config, testDataContigSet1, testDataContigSet2, testDataContigSet3, testDataAssembly1) {
+    function (Session, API, config, testDataContigSet1, testDataContigSet2, testDataContigSet3, testDataAssembly10, testDataAssembly40) {
         'use strict';
         // Taxon API tests
         describe('Assembly API', function () {
@@ -63,13 +64,43 @@ define([
 
             // This works if all tests use default settings.
 
-            var testDataSets = [testDataContigSet1, testDataContigSet2, testDataContigSet3, testDataAssembly1];
+//            var testDataSets = [
+//                //testDataContigSet1, 
+//                testDataContigSet2, 
+//                testDataContigSet3,
+//                // disable because very slow
+//                //testDataAssembly10,
+//                // testDataAssembly40
+//            ];
+            
+            var testDataSets = [{
+                name: 'KBaseGenomes.ContigSet-2.0',
+                data: testDataContigSet2,
+                disabled: false
+            }, {
+                name: 'KBaseGenomes.ContigSet-3.0',
+                data: testDataContigSet3,
+                disabled: false
+            }, {
+                name: 'KBaseGenomeAnnotations.Assembly-1.0',
+                data: testDataAssembly10,
+                disabled: false
+            }, {
+                name: 'KBaseGenomeAnnotations.Assembly-4.0',
+                data: testDataAssembly40,
+                disabled: true
+            }];
 
-            testDataSets.forEach(function (testData) {
-                var methods = Object.keys(testData.results);
+            testDataSets.forEach(function (testSetup) {
+                if (testSetup.disabled) {
+                    return;
+                }
+                var testData = testSetup.data,
+                    methods = Object.keys(testData.results),                    
+                    label = 'Test data for type ' + testSetup.name;
 
                 methods.forEach(function (methodName) {
-                    it('Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
+                    it(label + '. Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
                         var client = makeClient({
                             ref: testData.input.ref
                         }),
@@ -86,6 +117,7 @@ define([
                                         }
                                         break;
                                 }
+                                
                                 expect(value).toEqual(results.result);
                                 done();
                                 return null;

@@ -30,7 +30,7 @@
     "requirejs": "^2.0.0",
     "kbase-common-js": "^1.0.0",
     "kbase-service-clients-js": "^1.0.0",
-    "kbase-data-thrift-js": "^1.0.0"
+    "kbase-data-thrift-js": "^1.1.0"
   },
   "devDependencies": {
     "text": "requirejs-text#2.0.14",

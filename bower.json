@@ -23,7 +23,7 @@
   "main": "install.yml",
   "repository": {
     "type": "git",
-    "url": "git://github.com/eapearson/kbase-data-api-js-clients"
+    "url": "git://github.com/kbase/kbase-data-api-js-clients"
   },
   "dependencies": {
     "bluebird": "~3.1.0",

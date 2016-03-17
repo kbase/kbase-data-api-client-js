@@ -66,13 +66,33 @@ define([
             // This works if all tests use default settings.
 
             var testDataSets = [testDataGenome1, testDataGenome6, testDataGenome7, testDataGenome8, testDataTaxon1];
+            
+             var testDataSets = [{
+                name: 'KBaseGenomes.Genome-1.0',
+                data: testDataGenome1
+            },{
+                name: 'KBaseGenomes.Genome-6.0',
+                data: testDataGenome6
+            }, {
+                name: 'KBaseGenomes.Genome-7.0',
+                data: testDataGenome7
+            }, {
+                name: 'KBaseGenomes.Genome-8.0',
+                data: testDataGenome8
+            }, {
+                name: 'KBaseGenomeAnnotations.Taxon-1.0.json',
+                data: testDataTaxon1
+            }];
 
-            testDataSets.forEach(function (testData) {
 
-                var methods = Object.keys(testData.results);
+            testDataSets.forEach(function (testSetup) {
+
+                var testData = testSetup.data,
+                    methods = Object.keys(testData.results),
+                    label = 'Test data for type ' + testSetup.name
 
                 methods.forEach(function (methodName) {
-                    it('Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
+                    it(label + '. Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
                         var client = makeClient({
                             ref: testData.input.ref
                         }),

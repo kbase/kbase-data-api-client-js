@@ -6,12 +6,14 @@ define([
     'kb/data/genomeAnnotation',
     'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-6.0.json',
     'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-7.0.json',
-    'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-7.0.json'
+    'json!data/sample-data_genomeAnnotation_KBaseGenomes.Genome-8.0.json',
+    'json!data/sample-data_genomeAnnotation_KBaseGenomeAnnotations.GenomeAnnotation-1.2.json',
+    'json!data/sample-data_genomeAnnotations_KBaseGenomeAnnotations.GenomeAnnotation-2.1.json'
 ],
-    function (Session, config, GenomeAnnotation, testDataGenome6, testDataGenome7, testDataGenome8) {
+    function (Session, config, GenomeAnnotation, testDataGenome6, testDataGenome7, testDataGenome8, testDataGenome12, testDataGenome21) {
         'use strict';
         // Taxon API tests
-        describe('Taxon API', function () {
+        describe('Genome Annotation API', function () {
             var token,
                 serviceUrl = config.genomeAnnotationUrl,
                 username = config.username,
@@ -23,7 +25,7 @@ define([
                     cookieName: 'testing',
                     loginUrl: loginUrl
                 });
-
+                
             function makeClient(options) {
                 var args = {
                     ref: options.ref,
@@ -63,20 +65,34 @@ define([
 
             // This works if all tests use default settings.
 
-            var testDataSets = [testDataGenome6, testDataGenome7, testDataGenome8];
+            var testDataSets = [{
+                name: 'KBaseGenomes.Genome-6.0',
+                data: testDataGenome6
+            }, {
+                name: 'KBaseGenomes.Genome-7.0',
+                data: testDataGenome7
+            }, {
+                name: 'KBaseGenomes.Genome-8.0',
+                data: testDataGenome8
+            }, {
+                name: 'KBaseGenomeAnnotations.GenomeAnnotation-2.1',
+                data: testDataGenome21
+            }];
 
-            testDataSets.forEach(function (testData) {
+            testDataSets.forEach(function (testSetup) {
 
-                var methods = Object.keys(testData.results);
+                var testData = testSetup.data,
+                    methods = Object.keys(testData.results),                    
+                    label = 'Test data for type ' + testSetup.name;
 
                 methods.forEach(function (methodName) {
-                    it('Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
+                    it(label + '. Calls method "' + methodName + '" arguments provided by test data and expect results provided by test data.', function (done) {
                         var client = makeClient({
                             ref: testData.input.ref
                         }),
                             method = client[methodName],
                             results = testData.results[methodName];
-
+                       // console.log(methodName, results.args);
                         return method.apply(client, results.args)
                             .then(function (value) {
                                 switch (results.type) {

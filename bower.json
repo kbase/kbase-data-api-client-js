@@ -23,14 +23,14 @@
   "main": "install.yml",
   "repository": {
     "type": "git",
-    "url": "git://github.com/eapearson/kbase-data-api-js-clients"
+    "url": "git://github.com/kbase/kbase-data-api-js-clients"
   },
   "dependencies": {
     "bluebird": "~3.1.0",
     "requirejs": "^2.0.0",
     "kbase-common-js": "^1.0.0",
     "kbase-service-clients-js": "^1.0.0",
-    "kbase-data-thrift-js": "^1.0.0"
+    "kbase-data-thrift-js": "^1.1.0"
   },
   "devDependencies": {
     "text": "requirejs-text#2.0.14",
@@ -41,7 +41,7 @@
     "require-css": "0.1.8",
     "font-awesome": "4.4.0",
     "requirejs-json": "^0.0.3",
-    "kbase-data-thrift-clients": "^1.0.0"
+    "kbase-data-thrift-clients": "^1.0.1"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

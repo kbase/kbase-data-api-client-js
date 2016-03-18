@@ -19,7 +19,7 @@
             "result": {
                 "crs": "Clustered Regularly Interspaced Short Palindromic Repeats",
                 "gene": "Gene",
-                "loci": "Loci or Gene (Genbank)",
+                "loci": "Loci or Genes (Genbank)",
                 "trm": "Terminator",
                 "pbs": "Protein Binding Site",
                 "opr": "Operons",
@@ -40242,7 +40242,7 @@
             ]
         },
         "proteins": {
-            "type": "array (of ProteinData)",
+            "type": "object",
             "result": {}
         },
         "feature_locations": {
@@ -40387,7 +40387,7 @@
     },
     "input": {
         "ref": "6/9/1",
-        "url": "https://ci.kbase.us/services/data/annotation",
+        "url": "https://ci.kbase.us/services/data/genome_annotation",
         "token": "",
         "timeout": 120000
     }

@@ -7,6 +7,6 @@ password: YOURPASSWORD
 loginUrl: https://ci.kbase.us/services/authorization/Sessions/Login
 taxonUrl: https://ci.kbase.us/services/data/taxon
 assemblyUrl: https://ci.kbase.us/services/data/assembly
-genomeAnnotationUrl: https://ci.kbase.us/services/data/annotation
-timeout: 10000
-testTimeout: 10000
+genomeAnnotationUrl: https://ci.kbase.us/services/data/genome_annotation
+timeout: 120000
+testTimeout: 120000

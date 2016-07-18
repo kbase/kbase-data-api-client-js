@@ -23,7 +23,7 @@
   "main": "install.yml",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kbase/kbase-data-api-js-clients"
+    "url": "git://github.com/kbase/kbase-data-api-client-js"
   },
   "dependencies": {
     "bluebird": "^3.1.0",
@@ -41,7 +41,7 @@
     "require-css": "0.1.8",
     "font-awesome": "4.4.0",
     "requirejs-json": "^0.0.3",
-    "kbase-data-thrift-clients": "^1.0.1"
+    "kbase-data-thrift-clients": "^1.1.0"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

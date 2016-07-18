@@ -346,11 +346,24 @@ define([
          */
         function mrna_by_gene(geneIdList) {
             return client().get_mrna_by_gene(authToken, objectReference, geneIdList, true)
-                .catch(genomeAnnotation.AttributeException, function (err) {
+                .catch(genomeAnnotation.AttributeException, function () {
                     return;
                 });
         }
 
+        /**
+         *  Retrieve a summary for this GenomeAnnotation.
+         *
+         * @returns {Promise ObjectRef} 
+         *
+         */
+        function summary() {
+            return client().get_summary(authToken, objectReference, true)
+                .catch(genomeAnnotation.AttributeException, function () {
+                    return;
+                });
+        }
+        
         // API
         return Object.freeze({
             taxon: taxon,
@@ -371,7 +384,8 @@ define([
             gene_by_cds: gene_by_cds,
             gene_by_mrna: gene_by_mrna,
             mrna_by_cds: mrna_by_cds,
-            mrna_by_gene: mrna_by_gene
+            mrna_by_gene: mrna_by_gene,
+            summary: summary
         });
     }
 
@@ -385,7 +399,7 @@ define([
         AuthenticationException: genomeAnnotation.AuthenticationException,
         ObjectReferenceException: genomeAnnotation.ObjectReferenceException,
         AttributeException: genomeAnnotation.AttributeException,
-        TypeException: genomeAnnotation.TypeException,
+        TypeException: genomeAnnotation.TypeException
     };
     
     for (var propKey in Thrift) {

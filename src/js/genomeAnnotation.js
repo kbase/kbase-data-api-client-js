@@ -354,7 +354,7 @@ define([
         /**
          *  Retrieve a summary for this GenomeAnnotation.
          *
-         * @returns {Promise ObjectRef} 
+         * @returns {Promise Object(string -> string)} 
          *
          */
         function summary() {
